@@ -64,7 +64,7 @@ try {
                 echo $row['Position'];
                 exit(0);
             } else {
-                echo 1;
+                echo 0;
                 exit(0);
             }
         }

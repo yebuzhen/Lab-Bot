@@ -114,11 +114,11 @@ if (isset($_GET['logout'])) {
             } else if (position == -2) {
                 document.getElementById("queryPosition").innerHTML = "Your request has been suspended, the assistant will help you out once ready.";
                 buttonChange(false);
-            } else if (position == 1){
+            } else if (position == 0){
                 document.getElementById("queryPosition").innerHTML = "The assistant is coming.";
                 buttonChange(false);
             } else{
-                document.getElementById("queryPosition").innerHTML = "Your request is at position " + position + ".";
+                document.getElementById("queryPosition").innerHTML = "Your request is at position " + position + ". Waiting for assistants.";
                 buttonChange(false);
             }
         });

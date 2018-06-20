@@ -37,12 +37,16 @@ if (isset($_GET['logout'])) {
 <div id="first">
     <p id="requestInfo"></p>
 
+    <form action="getNextRequest.php">
+        <input type="submit" value="Get Next" id="getNext">
+    </form>
+
     <form action="finishOneRequest.php">
         <input type="submit" value="Finish" id="finish"/>
     </form>
 
     <form action="suspendOneRequest.php">
-        <input type="submit" value="Later" id="later"/>
+        <input type="submit" value="Suspend" id="suspend"/>
     </form>
 
     <p id="requestSize"></p>
@@ -98,12 +102,19 @@ if (isset($_GET['logout'])) {
         $.get("nextRequest.php", function (email) {
             if (email === "null"){
                 document.getElementById('requestInfo').innerHTML = "There is no waiting request with no assistant handling in the queue now.";
+                document.getElementById('getNext').disabled = true;
                 document.getElementById('finish').disabled = true;
-                document.getElementById('later').disabled = true;
+                document.getElementById('suspend').disabled = true;
+            } else if (email.includes("??")) {
+                document.getElementById('requestInfo').innerHTML = "There is one request available."
+                document.getElementById('getNext').disabled = false;
+                document.getElementById('finish').disabled = true;
+                document.getElementById('suspend').disabled = true;
             } else {
                 document.getElementById('requestInfo').innerHTML = "You should be coming for " + email + ".";
+                document.getElementById('getNext').disabled = true;
                 document.getElementById('finish').disabled = false;
-                document.getElementById('later').disabled = false;
+                document.getElementById('suspend').disabled = false;
             }
         });
 
