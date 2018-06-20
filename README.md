@@ -4,4 +4,44 @@ A lab assistance system which will be deployed in University of Nottingham CS bu
 
 # Introduction
 ---
-The idea behind ‘Lab Bot’ is to provide a system by which students can request support easily and discreetly from their computer and that directs staff to the relevant students. **The system is still under developing.**
+The idea behind ‘Lab Bot’ is to provide a system by which students can request support easily and discreetly from their computer, and that directs staff to the relevant students. **The system is still under developing. We aim to put the system in A32 next term.**
+
+# Current Functions and Usages
+---
+Only the web service is currently available (locally).
+
+### For Students
+1. Using local account to log in the system.
+2. Make a request.
+3. Can see how many waiting requests are in the queue.
+4. Can see the position of my request.
+5. Can see the request history.
+5. Cancel the request.
+
+### For Assistants
+1. Using local account to log in the system.
+2. When there is a waiting request available, you can see who the request belongs to.
+3. Finish the request.
+4. Suspend the request (not fully functional).
+5. Can see the requests you have handled before.
+
+# Future Development
+---
+We will continue developing the web service and try to build software for A32 lab PC in the future.
+
+# How to Set up
+---
+Because all the files are running locally, you should install and run the MySQL system in your computer before testing.
+
+1. Import 'Lab-bot.qsl' file into your MySQL, which includes all the databases and some testing data.
+2. 'studentLogin.php' is for student users.
+3. 'adminLogin.php' is for assistant users.
+
+# Authors
+---
+- Buzhen Ye
+- Steven Bagley (Supervisor)
+
+# Contributing
+---
+If you want to understand the code, develop or contribute, please inform [Buzhen Ye]( mailto:psyby3@nottingham.ac.uk).
