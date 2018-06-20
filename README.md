@@ -23,8 +23,9 @@ Only the web service is currently available (locally).
 2. When there is a waiting request available, you can choose to help when get ready.
 3. After deciding to help, you can see which student to help.
 4. Finish the request.
-5. Suspend the request (not fully functional).
+5. Suspend the request.
 6. Can see the requests you have handled before.
+7. Can see all the suspended requests and choose one to help.
 
 # Future Development
 ---

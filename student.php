@@ -24,6 +24,9 @@ if (isset($_GET['logout'])) {
     table, th, td {
         border: 1px solid black;
     }
+    th, td {
+        text-align: center;
+    }
 </style>
 
 <body>
