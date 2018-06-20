@@ -39,8 +39,8 @@ Because all the files are running locally, you should install and run the MySQL 
 
 # Authors
 ---
-Buzhen Ye
-Steven Bagley (Supervisor)
+- Buzhen Ye
+- Steven Bagley (Supervisor)
 
 # Contributing
 ---
