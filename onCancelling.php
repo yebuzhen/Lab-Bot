@@ -37,6 +37,12 @@ try {
         }
     }
 
+    if ($id == ""){
+        echo "<script type='text/javascript'> alert('Your request has been handled by the assistance!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+
 } catch (Exception $exception){
     echo "<script type='text/javascript'> alert('Error for ID query!') </script>";
     echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";

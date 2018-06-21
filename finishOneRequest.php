@@ -32,6 +32,12 @@ try {
         $position = $row['Position'];
     }
 
+    if ($id == ""){
+        echo "<script type='text/javascript'> alert('The request has been canceled by the student!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";
+        exit(0);
+    }
+
 } catch (Exception $exception){
     echo "<script type='text/javascript'> alert('Error for ID and position query!') </script>";
     echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";

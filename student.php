@@ -129,7 +129,7 @@ if (isset($_GET['logout'])) {
 
     initial();
 
-    setInterval(initial, 1000);
+    setInterval(initial, 5000);
 
 
 </script>
