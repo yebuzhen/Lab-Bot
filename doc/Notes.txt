@@ -1,0 +1,32 @@
+Comparisons between RabbitMQ and MySQL in implementing Lab-Bot:
+
+
+RabbitMQ's functions and advantages:
+1. Various APIs and plugins, friendly for web-based service and software-based(Java) service.
+2. Asynchronous messaging supported. RabbitMQ can easily handle multiple producers and consumers.
+3. Flexible routing to queues, various exchange type.
+
+RabbitMQ's restrictions and disadvantages:
+1. Impossible to know the specific item's position in the queue.
+2. Hard to peak the queue (Need to manually acknowledge the message).
+3. RabbitMQ Web STOMP Plugin has very limited functions.
+4. Items in the queue can only contain character strings.
+
+
+MySQL's functions and advantages:
+1. Works very well in web-based service with php.
+2. All data can be stored in one place (MySQL).
+3. Easy to peak the queue.
+4. Easy to build relations between tables (foreign keys).
+5. Easy to know one specific item's position in the queue.
+6. The object in the queue can contain multiple data.
+7. Easy to archive messages.
+
+MySQL's restrictions and disadvantages:
+1. Hard to fetch queue message quickly.
+2. Need to manually handle asynchronous messaging.
+3. Need to set time interval JavaScript functions to update statues.
+
+
+---------------------------------------------------------------------------------------------------
+TBC.
