@@ -17,10 +17,16 @@ function generateRandomString($length = 11) {
     return $randomString;
 }
 
+date_default_timezone_set('Europe/London');
+
 $state = 'Waiting';
 $queueCount = 0;
 $id = generateRandomString();
 $handling_by = 'null';
+$weekday = date("w");
+$time = date("H:i:s");
+$mCode = 'null';
+$ifInModule = false;
 
 
 //duplicate waiting or suspended query
@@ -53,6 +59,72 @@ try {
     exit(0);
 }
 
+
+//Query the module code
+try {
+    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+    $pdo = new PDO($dsn,$db_username,$db_password);
+
+    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+    $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+
+    $stmt->bindParam(':time', $time);
+    $stmt->bindParam(':weekday', $weekday);
+
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll();
+
+    foreach ($rows as $row) {
+        $mCode = $row['mCode'];
+    }
+
+    if ($mCode == 'null'){
+        echo "<script type='text/javascript'> alert('There is no lab now!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+} catch (Exception $exception){
+    echo "<script type='text/javascript'> alert('Error for module code query!') </script>";
+    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+    exit(0);
+}
+
+
+//Check the enrollment
+try{
+    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+    $pdo = new PDO($dsn,$db_username,$db_password);
+
+    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+    $stmt = $pdo->prepare("SELECT * FROM Enrollment WHERE mCode = :code;");
+
+    $stmt->bindParam(':code', $mCode);
+
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll();
+
+    foreach ($rows as $row) {
+        if ($row['uEmail'] == $_SESSION['username']) {
+            $ifInModule = true;
+        }
+    }
+
+    if (!$ifInModule) {
+        echo "<script type='text/javascript'> alert('Sorry, you are not in this module!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+} catch (Exception $exception){
+    echo "<script type='text/javascript'> alert('Error for checking the enrollment!') </script>";
+    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+    exit(0);
+}
 
 //request insertion
 try {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 20, 2018 at 03:04 PM
+-- Generation Time: Jun 22, 2018 at 06:38 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -44,6 +44,68 @@ INSERT INTO `Admins` (`Email`, `Password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `Enrollment`
+--
+
+CREATE TABLE `Enrollment` (
+  `ID` int(11) NOT NULL,
+  `uEmail` varchar(255) NOT NULL,
+  `mCode` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Enrollment`
+--
+
+INSERT INTO `Enrollment` (`ID`, `uEmail`, `mCode`) VALUES
+(1, '11@11.com', 'G52OSC'),
+(2, '11@11.com', 'G52SWM'),
+(3, '22@22.com', 'G52OSC'),
+(4, '33@33.com', 'G52SWM');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Labs`
+--
+
+CREATE TABLE `Labs` (
+  `ID` int(11) NOT NULL,
+  `mCode` varchar(10) NOT NULL,
+  `Weekday` int(11) NOT NULL,
+  `Start_Time` time NOT NULL,
+  `End_Time` time NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Labs`
+--
+
+INSERT INTO `Labs` (`ID`, `mCode`, `Weekday`, `Start_Time`, `End_Time`) VALUES
+(1, 'G52OSC', 5, '17:00:00', '19:00:00'),
+(2, 'G52SWM', 4, '03:00:00', '08:00:00');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `Modules`
+--
+
+CREATE TABLE `Modules` (
+  `Code` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Modules`
+--
+
+INSERT INTO `Modules` (`Code`) VALUES
+('G52OSC'),
+('G52SWM');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `Queue`
 --
 
@@ -52,6 +114,14 @@ CREATE TABLE `Queue` (
   `rID` varchar(255) NOT NULL,
   `Handling_By` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `Queue`
+--
+
+INSERT INTO `Queue` (`Position`, `rID`, `Handling_By`) VALUES
+(1, '4vLYpmJ5KiU', 'null'),
+(2, 'XThOP6VX6bh', 'null');
 
 -- --------------------------------------------------------
 
@@ -73,32 +143,14 @@ CREATE TABLE `Requests` (
 --
 
 INSERT INTO `Requests` (`ID`, `State`, `Generated_By`, `Handled_By`, `Created_Time`, `Finished_Time`) VALUES
-('4psVMiIL0Dq', 'Finished', '11@11.com', 'as@as.com', '2018-06-19 17:30:57', '2018-06-19 17:31:36'),
-('5u13rwAWM4j', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-19 17:31:09', '2018-06-19 17:32:15'),
-('70aQRWqS5fK', 'Finished', '33@33.com', 'ad@ad.com', '2018-06-19 19:23:13', '2018-06-19 19:31:22'),
-('C2nDjvqLEdk', 'Finished', '11@11.com', 'as@as.com', '2018-06-20 10:58:52', '2018-06-20 10:59:23'),
-('Eu2McCfOeNQ', 'Canceled', '44@44.com', 'as@as.com', '2018-06-19 17:31:25', NULL),
-('Fl4u6xFms6S', 'Canceled', '22@22.com', 'as@as.com', '2018-06-19 17:54:24', NULL),
-('fpjMvfvrqiG', 'Finished', '11@11.com', 'as@as.com', '2018-06-19 19:21:34', '2018-06-19 19:24:20'),
-('hMtHqReWG7v', 'Canceled', '44@44.com', NULL, '2018-06-19 19:30:09', NULL),
-('IXKBwfAWpBS', 'Suspended', '33@33.com', 'as@as.com', '2018-06-20 11:05:00', NULL),
-('JtQzjyMkfLD', 'Canceled', '33@33.com', 'as@as.com', '2018-06-19 17:54:52', NULL),
-('kWxREfywCEB', 'Finished', '33@33.com', 'as@as.com', '2018-06-19 17:14:47', '2018-06-19 17:15:29'),
-('NKf7uxD0USa', 'Finished', '33@33.com', 'as@as.com', '2018-06-19 17:31:18', '2018-06-19 17:32:01'),
-('qOfI2pbN7kb', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-19 17:13:59', '2018-06-19 17:15:53'),
-('r8xxKQ2YULh', 'Finished', '11@11.com', 'as@as.com', '2018-06-19 17:13:32', '2018-06-19 17:15:13'),
-('Rbte6t6ZZPT', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-20 11:04:06', '2018-06-20 11:22:40'),
-('sd5IkA1Ffaj', 'Finished', '11@11.com', 'as@as.com', '2018-06-20 11:02:39', '2018-06-20 11:07:31'),
-('SRjpk92FIus', 'Canceled', '33@33.com', NULL, '2018-06-19 17:35:06', NULL),
-('T6JqTOFQueG', 'Finished', '44@44.com', 'as@as.com', '2018-06-19 19:24:49', '2018-06-19 19:25:13'),
-('TFq814OFgYg', 'Canceled', '33@33.com', 'ad@ad.com', '2018-06-19 17:36:00', NULL),
-('UaF3wEIK9hG', 'Finished', '44@44.com', 'as@as.com', '2018-06-19 17:55:01', '2018-06-19 17:57:20'),
-('UkKGyc93zar', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-19 19:22:16', '2018-06-19 19:24:06'),
-('vR0UmVw2te8', 'Canceled', '44@44.com', NULL, '2018-06-19 19:21:16', NULL),
-('VunKpE4bvDd', 'Finished', '44@44.com', 'as@as.com', '2018-06-19 17:43:49', '2018-06-19 17:49:33'),
-('XqpQfnLjI63', 'Canceled', '11@11.com', NULL, '2018-06-19 17:34:51', NULL),
-('y8NJJnPU5bn', 'Canceled', '22@22.com', NULL, '2018-06-20 10:59:11', NULL),
-('Zf7TibTjRl7', 'Finished', '11@11.com', 'ad@ad.com', '2018-06-19 17:54:13', '2018-06-19 17:57:16');
+('2eX5Fe8z1ER', 'Canceled', '11@11.com', NULL, '2018-06-21 15:24:44', NULL),
+('4vLYpmJ5KiU', 'Waiting', '11@11.com', NULL, '2018-06-22 17:11:00', NULL),
+('bhWcomaLL9y', 'Canceled', '11@11.com', 'ad@ad.com', '2018-06-21 15:25:14', NULL),
+('eXiK3cc5f0b', 'Finished', '11@11.com', 'ad@ad.com', '2018-06-21 15:27:58', '2018-06-21 15:28:17'),
+('HsehiHGTku9', 'Canceled', '11@11.com', NULL, '2018-06-21 15:24:23', NULL),
+('LdMRqDK4Bq3', 'Canceled', '11@11.com', NULL, '2018-06-21 15:25:02', NULL),
+('qfTDUAD2mXY', 'Canceled', '11@11.com', NULL, '2018-06-21 15:02:02', NULL),
+('XThOP6VX6bh', 'Waiting', '22@22.com', NULL, '2018-06-22 17:11:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -132,6 +184,27 @@ ALTER TABLE `Admins`
   ADD PRIMARY KEY (`Email`);
 
 --
+-- Indexes for table `Enrollment`
+--
+ALTER TABLE `Enrollment`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `e_fk1` (`uEmail`),
+  ADD KEY `e_fk2` (`mCode`);
+
+--
+-- Indexes for table `Labs`
+--
+ALTER TABLE `Labs`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `l_fk` (`mCode`);
+
+--
+-- Indexes for table `Modules`
+--
+ALTER TABLE `Modules`
+  ADD PRIMARY KEY (`Code`);
+
+--
 -- Indexes for table `Queue`
 --
 ALTER TABLE `Queue`
@@ -155,6 +228,19 @@ ALTER TABLE `Users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `Enrollment`
+--
+ALTER TABLE `Enrollment`
+  ADD CONSTRAINT `e_fk1` FOREIGN KEY (`uEmail`) REFERENCES `Users` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `e_fk2` FOREIGN KEY (`mCode`) REFERENCES `Modules` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `Labs`
+--
+ALTER TABLE `Labs`
+  ADD CONSTRAINT `l_fk` FOREIGN KEY (`mCode`) REFERENCES `Modules` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Queue`

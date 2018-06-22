@@ -12,11 +12,11 @@ Only the web service is currently available (locally).
 
 ### For Students
 1. Using local account to log in the system.
-2. Make a request.
+2. Make a request. (Requests can only be made when there is a lab in A32 and the student is enrolled in the corresponding module)
 3. Can see how many waiting requests are in the queue.
 4. Can see the position of my request.
 5. Can see the request history.
-5. Cancel the request.
+6. Cancel the request.
 
 ### For Assistants
 1. Using local account to log in the system.
