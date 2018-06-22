@@ -36,8 +36,9 @@ We will continue developing the web service and try to build software for A32 la
 Because all the files are running locally, you should install and run the MySQL system in your computer before testing.
 
 1. Import 'Lab-bot.qsl' file into your MySQL, which includes all the databases and some testing data.
-2. 'studentLogin.php' is for student users.
-3. 'adminLogin.php' is for assistant users.
+2. Make sure credentials are correct in 'credentials.php', matching your own database.
+3. 'studentLogin.php' is for student users.
+4. 'adminLogin.php' is for assistant users.
 
 # Authors
 ---

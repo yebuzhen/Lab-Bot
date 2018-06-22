@@ -16,7 +16,7 @@ RabbitMQ's restrictions and disadvantages:
 MySQL's functions and advantages:
 1. Works very well in web-based service with php.
 2. All data can be stored in one place (MySQL).
-3. Easy to peak the queue.
+3. Easy to peek the queue.
 4. Easy to build relations between tables (foreign keys).
 5. Easy to know one specific item's position in the queue.
 6. The object in the queue can contain multiple data.
