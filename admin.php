@@ -123,7 +123,7 @@ if (isset($_GET['logout'])) {
 
                     foreach ($rows as $row) {
                         echo "<tr><td>" . $row['State'] . "</td><td>" .$row['Generated_By'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Handled_By'] . "</td>";
-                        echo "<td><a href='finishSuspendedRequest.php?id=" . $row['ID'] . "'>Finish</a> </td></tr>";
+                        echo "<td><a href='finishSuspendedRequest.php?id=" . $row['ID'] . "' style='color: #dddd55'>Finish</a> </td></tr>";
         //                echo "<td><form action='finishSuspendedRequest.php?id=" . $row['ID'] . "'><input type=\"submit\" value=\"Finish\" id=\"finishSuspend\"/></form></td></tr>";
                     }
 
