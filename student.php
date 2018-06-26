@@ -18,121 +18,115 @@ if (isset($_GET['logout'])) {
     <meta charset="UTF-8">
     <title>Student Request</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="css/student.css">
 </head>
 
-<style>
-    table, th, td {
-        border: 1px solid black;
-    }
-    th, td {
-        text-align: center;
-    }
-</style>
-
 <body>
+    <div class="wrapper">
 
-<div>
-    Welcome <?php echo $_SESSION['username']?> !
-</div>
+        <div>
+            Welcome <?php echo $_SESSION['username']?> !
+        </div>
 
-<br>
+        <p>
+            <a href="student.php?logout='1'" style="color: #dddd55">logout</a>
+        </p>
 
-<div id="first">
-    <form action="onSending.php">
-        <button id="request">Make a Request</button>
-    </form>
+        <div id="first">
+            <form action="onSending.php">
+                <button id="request">Make a Request</button>
+            </form>
 
-    <form action="onCancelling.php">
-        <button id="cancel">Cancel My Request</button>
-    </form>
+            <form action="onCancelling.php">
+                <button id="cancel">Cancel My Request</button>
+            </form>
 
-    <p id="requestSize"></p>
-    <p id="queryPosition"></p>
+            <p id="requestSize"></p>
+            <p id="queryPosition"></p>
 
-    <table style="width: 100%;">
-        <caption style="font-weight: bold; font-size: large;">Request History</caption>
-        <tr>
-            <th>State</th>
-            <th>Created Time</th>
-            <th>Finished Time</th>
-        </tr>
-        <?php
-        error_reporting(E_ALL);
-        ini_set('display_errors', 1);
+            <table class='rwd-table' style='width: 100%;' border="1">
+                <caption style="font-weight: bold; font-size: large;">Request History</caption>
+                <tr>
+                    <th>State</th>
+                    <th>Created Time</th>
+                    <th>Finished Time</th>
+                </tr>
+                <?php
+                error_reporting(E_ALL);
+                ini_set('display_errors', 1);
 
-        include("credentials.php");
+                include("credentials.php");
 
-        try {
-            $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+                try {
+                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
-            $pdo = new PDO($dsn,$db_username,$db_password);
+                    $pdo = new PDO($dsn,$db_username,$db_password);
 
-            $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-            $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_by = :generated_by;");
+                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_by = :generated_by;");
 
-            $stmt->bindParam(':generated_by', $_SESSION['username']);
+                    $stmt->bindParam(':generated_by', $_SESSION['username']);
 
-            $stmt->execute();
+                    $stmt->execute();
 
-            $rows = $stmt->fetchAll();
+                    $rows = $stmt->fetchAll();
 
-            foreach ($rows as $row) {
-                echo "<tr><td>" . $row['State'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
+                    foreach ($rows as $row) {
+                        echo "<tr><td>" . $row['State'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
+                    }
+
+                } catch (Exception $exception){
+                    echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
+                    exit(0);
+                }
+                ?>
+            </table>
+        </div>
+    </div>
+    <script>
+        function buttonChange(state) {
+            if (state == false) {
+                document.getElementById('request').disabled = true;
+                document.getElementById('cancel').disabled = false;
+            } else {
+                document.getElementById('request').disabled = false;
+                document.getElementById('cancel').disabled = true;
             }
-
-        } catch (Exception $exception){
-            echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
-            exit(0);
         }
-        ?>
-    </table>
 
-    <p>
-        <a href="student.php?logout='1'">logout</a>
-    </p>
-</div>
+        function initial() {
 
-<script>
-    function buttonChange(state) {
-        if (state == false) {
-            document.getElementById('request').disabled = true;
-            document.getElementById('cancel').disabled = false;
-        } else {
-            document.getElementById('request').disabled = false;
-            document.getElementById('cancel').disabled = true;
+            $.get("requestSize.php", function (size) {
+                document.getElementById('requestSize').innerHTML = 'Waiting requests size (includes being handling ones): ' + size;
+            });
+
+            $.get("queryPosition.php", function (position) {
+                if (position == -1) {
+                    document.getElementById("queryPosition").innerHTML = "You have not made a request.";
+                    buttonChange(true);
+                } else if (position == -2) {
+                    document.getElementById("queryPosition").innerHTML = "Your request has been suspended, the assistant will help you out once ready.";
+                    buttonChange(false);
+                } else if (position == 0){
+                    document.getElementById("queryPosition").innerHTML = "The assistant is coming.";
+                    buttonChange(false);
+                } else{
+                    document.getElementById("queryPosition").innerHTML = "Your request is at position " + position + ". Waiting for assistants.";
+                    buttonChange(false);
+                }
+            });
         }
-    }
 
-    function initial() {
+        initial();
 
-        $.get("requestSize.php", function (size) {
-            document.getElementById('requestSize').innerHTML = 'Waiting requests size (includes being handling ones): ' + size;
-        });
-
-        $.get("queryPosition.php", function (position) {
-            if (position == -1) {
-                document.getElementById("queryPosition").innerHTML = "You have not made a request.";
-                buttonChange(true);
-            } else if (position == -2) {
-                document.getElementById("queryPosition").innerHTML = "Your request has been suspended, the assistant will help you out once ready.";
-                buttonChange(false);
-            } else if (position == 0){
-                document.getElementById("queryPosition").innerHTML = "The assistant is coming.";
-                buttonChange(false);
-            } else{
-                document.getElementById("queryPosition").innerHTML = "Your request is at position " + position + ". Waiting for assistants.";
-                buttonChange(false);
-            }
-        });
-    }
-
-    initial();
-
-    setInterval(initial, 5000);
+        setInterval(initial, 5000);
 
 
-</script>
+    </script>
 
 </body>
 
