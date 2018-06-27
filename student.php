@@ -19,7 +19,7 @@ if (isset($_GET['logout'])) {
     <title>Student</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel="stylesheet" href="css/homepage.css">
 </head>
@@ -36,20 +36,23 @@ if (isset($_GET['logout'])) {
         </p>
 
         <div id="first">
-            <form action="onSending.php">
-                <button id="request">Make a Request</button>
+            <form action="onSending.php" style="float: left">
+                <button id="request" class="btn btn-success">Make a Request</button>
             </form>
 
+
             <form action="onCancelling.php">
-                <button id="cancel">Cancel My Request</button>
+                <button id="cancel" class="btn btn-danger" style="margin-left: 21%">Cancel My Request</button>
             </form>
+
+            <p/>
 
             <p id="requestSize"></p>
             <p id="queryPosition"></p>
 
-            <table class='rwd-table' style='width: 100%;' border="1">
-                <caption style="font-weight: bold; font-size: large;">Request History</caption>
-                <tr>
+            <table class='table-hover' style='width: 100%;' border="1">
+                <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Request History</caption>
+                <tr style="color: #dddd55">
                     <th>State</th>
                     <th>Created Time</th>
                     <th>Finished Time</th>
