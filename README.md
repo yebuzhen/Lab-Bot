@@ -20,7 +20,7 @@ Only the web service is currently available (locally).
 
 ### For Assistants
 1. Using local account to log in the system.
-2. When there is a waiting request available, you can choose to help when get ready.
+2. When there is a waiting request available, you can choose to help when get ready. (Assistants can only handle requests from the modules they enrolled in)
 3. After deciding to help, you can see which student to help.
 4. Finish the request.
 5. Suspend the request.
