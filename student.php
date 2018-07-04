@@ -70,7 +70,7 @@ if (isset($_GET['logout'])) {
 
                     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_by = :generated_by;");
+                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_by = :generated_by ORDER BY Created_Time;");
 
                     $stmt->bindParam(':generated_by', $_SESSION['username']);
 

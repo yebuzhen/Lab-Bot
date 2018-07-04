@@ -47,7 +47,7 @@ if (isset($_GET['logout'])) {
             </form>
 
             <form action="finishOneRequest.php">
-                <button id="finish" class="btn btn-success" style="margin-left: 30%">Finish</button>
+                <button id="finish" class="btn btn-success" style="margin-left: 26.5%">Finish</button>
             </form>
 
             <p/>
@@ -75,7 +75,7 @@ if (isset($_GET['logout'])) {
 
                     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Handled_By = :handled_by;");
+                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Handled_By = :handled_by ORDER BY Created_Time;");
 
                     $stmt->bindParam(':handled_by', $_SESSION['username']);
 
@@ -117,7 +117,7 @@ if (isset($_GET['logout'])) {
 
                     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE State = 'Suspended';");
+                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE State = 'Suspended' ORDER BY Created_Time;");
 
                     $stmt->execute();
 
@@ -143,7 +143,7 @@ if (isset($_GET['logout'])) {
         function initial() {
             $.get("nextRequest.php", function (email) {
                 if (email === "null"){
-                    document.getElementById('requestInfo').innerHTML = "There is no waiting request with no assistant handling in the queue now.";
+                    document.getElementById('requestInfo').innerHTML = "There is no waiting request without assistant handling in the queue now.";
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
