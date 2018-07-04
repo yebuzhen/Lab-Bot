@@ -77,6 +77,12 @@ try {
 
     $rows = $stmt->fetchAll();
 
+    if (count($rows) > 1) {
+        echo "<script type='text/javascript'> alert('There are more than 1 labs in the room, please contact admin!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+
     foreach ($rows as $row) {
         $mCode = $row['mCode'];
     }
