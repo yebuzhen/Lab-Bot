@@ -63,38 +63,38 @@ if (isset($_GET['logout'])) {
                     <th>Finished Time</th>
                 </tr>
                 <?php
-                error_reporting(E_ALL);
-                ini_set('display_errors', 1);
+                    error_reporting(E_ALL);
+                    ini_set('display_errors', 1);
 
-                include("credentials.php");
+                    include("credentials.php");
 
-                try {
-                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+                    try {
+                        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
-                    $pdo = new PDO($dsn,$db_username,$db_password);
+                        $pdo = new PDO($dsn,$db_username,$db_password);
 
-                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+                        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Handled_By = :handled_by ORDER BY Created_Time;");
+                        $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Handled_By = :handled_by ORDER BY Created_Time;");
 
-                    $stmt->bindParam(':handled_by', $_SESSION['username']);
+                        $stmt->bindParam(':handled_by', $_SESSION['username']);
 
-                    $stmt->execute();
+                        $stmt->execute();
 
-                    $rows = $stmt->fetchAll();
+                        $rows = $stmt->fetchAll();
 
-                    foreach ($rows as $row) {
-                        echo "<tr><td>" . $row['State'] . "</td><td>" .$row['Generated_By'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
+                        foreach ($rows as $row) {
+                            echo "<tr><td>" . $row['State'] . "</td><td>" .$row['Generated_By'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
+                        }
+
+                    } catch (Exception $exception){
+                        echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
+                        exit(0);
                     }
-
-                } catch (Exception $exception){
-                    echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
-                    exit(0);
-                }
                 ?>
             </table>
 
-            <table class='table-hover' border="1" style="width: 100%;">
+            <table class='table-hover' border="1" style="width: 100%;" id="suspendedTable">
                 <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Suspended Requests</caption>
                 <tr style="color: #dddd55">
                     <th>State</th>
@@ -105,34 +105,34 @@ if (isset($_GET['logout'])) {
                 </tr>
 
                 <?php
-                error_reporting(E_ALL);
-                ini_set('display_errors', 1);
+                    error_reporting(E_ALL);
+                    ini_set('display_errors', 1);
 
-                include("credentials.php");
+                    include("credentials.php");
 
-                try {
-                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+                    try {
+                        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
-                    $pdo = new PDO($dsn,$db_username,$db_password);
+                        $pdo = new PDO($dsn,$db_username,$db_password);
 
-                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+                        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE State = 'Suspended' ORDER BY Created_Time;");
+                        $stmt = $pdo->prepare("SELECT * FROM Requests WHERE State = 'Suspended' ORDER BY Created_Time;");
 
-                    $stmt->execute();
+                        $stmt->execute();
 
-                    $rows = $stmt->fetchAll();
+                        $rows = $stmt->fetchAll();
 
-                    foreach ($rows as $row) {
-                        echo "<tr><td>" . $row['State'] . "</td><td>" .$row['Generated_By'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Handled_By'] . "</td>";
-                        echo "<td><a href='finishSuspendedRequest.php?id=" . $row['ID'] . "' style='color: #dddd55'>Finish</a> </td></tr>";
-        //                echo "<td><form action='finishSuspendedRequest.php?id=" . $row['ID'] . "'><input type=\"submit\" value=\"Finish\" id=\"finishSuspend\"/></form></td></tr>";
+                        foreach ($rows as $row) {
+                            echo "<tr><td>" . $row['State'] . "</td><td>" .$row['Generated_By'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Handled_By'] . "</td>";
+                            echo "<td><a href='finishSuspendedRequest.php?id=" . $row['ID'] . "' style='color: #dddd55'>Finish</a> </td></tr>";
+                            //                echo "<td><form action='finishSuspendedRequest.php?id=" . $row['ID'] . "'><input type=\"submit\" value=\"Finish\" id=\"finishSuspend\"/></form></td></tr>";
+                        }
+
+                    } catch (Exception $exception){
+                        echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
+                        exit(0);
                     }
-
-                } catch (Exception $exception){
-                    echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
-                    exit(0);
-                }
                 ?>
             </table>
         </div>
@@ -152,6 +152,25 @@ if (isset($_GET['logout'])) {
                     document.getElementById('getNext').disabled = false;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
+                } else if (email === "duplicate labs") {
+                    document.getElementById('requestInfo').innerHTML = "There are more than 1 labs in the room, please contact admin!";
+                    document.getElementById('getNext').disabled = true;
+                    document.getElementById('finish').disabled = true;
+                    document.getElementById('suspend').disabled = true;
+                } else if (email === "no lab") {
+                    document.getElementById('requestInfo').innerHTML = "No lab now";
+                    document.getElementById('getNext').disabled = true;
+                    document.getElementById('finish').disabled = true;
+                    document.getElementById('suspend').disabled = true;
+                    document.getElementById('suspendedTable').outerHTML = "";
+                    document.getElementById('requestSize').outerHTML = "";
+                } else if (email === "no enrollment") {
+                    document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab";
+                    document.getElementById('getNext').disabled = true;
+                    document.getElementById('finish').disabled = true;
+                    document.getElementById('suspend').disabled = true;
+                    document.getElementById('suspendedTable').outerHTML = "";
+                    document.getElementById('requestSize').outerHTML = "";
                 } else {
                     document.getElementById('requestInfo').innerHTML = "You should be coming for " + email + ".";
                     document.getElementById('getNext').disabled = true;

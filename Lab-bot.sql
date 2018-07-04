@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jun 22, 2018 at 06:38 PM
+-- Generation Time: Jul 04, 2018 at 08:41 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -21,6 +21,25 @@ SET time_zone = "+00:00";
 --
 -- Database: `Summer`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `AdminEnrollment`
+--
+
+CREATE TABLE `AdminEnrollment` (
+  `ID` int(11) NOT NULL,
+  `aEmail` varchar(255) NOT NULL,
+  `mCode` varchar(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `AdminEnrollment`
+--
+
+INSERT INTO `AdminEnrollment` (`ID`, `aEmail`, `mCode`) VALUES
+(1, 'ad@ad.com', 'G52OSC');
 
 -- --------------------------------------------------------
 
@@ -82,8 +101,8 @@ CREATE TABLE `Labs` (
 --
 
 INSERT INTO `Labs` (`ID`, `mCode`, `Weekday`, `Start_Time`, `End_Time`) VALUES
-(1, 'G52OSC', 5, '17:00:00', '19:00:00'),
-(2, 'G52SWM', 4, '03:00:00', '08:00:00');
+(1, 'G52OSC', 3, '16:00:00', '21:00:00'),
+(2, 'G52SWM', 3, '04:00:00', '06:00:00');
 
 -- --------------------------------------------------------
 
@@ -115,14 +134,6 @@ CREATE TABLE `Queue` (
   `Handling_By` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `Queue`
---
-
-INSERT INTO `Queue` (`Position`, `rID`, `Handling_By`) VALUES
-(1, '4vLYpmJ5KiU', 'null'),
-(2, 'XThOP6VX6bh', 'null');
-
 -- --------------------------------------------------------
 
 --
@@ -143,14 +154,20 @@ CREATE TABLE `Requests` (
 --
 
 INSERT INTO `Requests` (`ID`, `State`, `Generated_By`, `Handled_By`, `Created_Time`, `Finished_Time`) VALUES
+('1Eu3d1INbXi', 'Canceled', '22@22.com', NULL, '2018-07-04 17:05:01', NULL),
 ('2eX5Fe8z1ER', 'Canceled', '11@11.com', NULL, '2018-06-21 15:24:44', NULL),
-('4vLYpmJ5KiU', 'Waiting', '11@11.com', NULL, '2018-06-22 17:11:00', NULL),
+('4vLYpmJ5KiU', 'Canceled', '11@11.com', NULL, '2018-06-22 17:11:00', NULL),
 ('bhWcomaLL9y', 'Canceled', '11@11.com', 'ad@ad.com', '2018-06-21 15:25:14', NULL),
+('EQHEezepBf4', 'Canceled', '22@22.com', 'ad@ad.com', '2018-07-04 18:04:19', NULL),
 ('eXiK3cc5f0b', 'Finished', '11@11.com', 'ad@ad.com', '2018-06-21 15:27:58', '2018-06-21 15:28:17'),
 ('HsehiHGTku9', 'Canceled', '11@11.com', NULL, '2018-06-21 15:24:23', NULL),
+('joqPUdQv0Tm', 'Finished', '22@22.com', 'ad@ad.com', '2018-07-04 16:56:14', '2018-07-04 16:56:44'),
 ('LdMRqDK4Bq3', 'Canceled', '11@11.com', NULL, '2018-06-21 15:25:02', NULL),
+('McFtZmeWA2i', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-27 17:58:57', '2018-06-27 18:00:06'),
 ('qfTDUAD2mXY', 'Canceled', '11@11.com', NULL, '2018-06-21 15:02:02', NULL),
-('XThOP6VX6bh', 'Waiting', '22@22.com', NULL, '2018-06-22 17:11:29', NULL);
+('tDtxnpGxJzT', 'Finished', '11@11.com', 'ad@ad.com', '2018-06-27 17:41:42', '2018-06-27 17:42:12'),
+('V0jh0lecAd5', 'Finished', '22@22.com', 'as@as.com', '2018-07-04 19:39:29', '2018-07-04 19:39:38'),
+('XThOP6VX6bh', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-22 17:11:29', '2018-06-26 16:57:00');
 
 -- --------------------------------------------------------
 
@@ -176,6 +193,14 @@ INSERT INTO `Users` (`Email`, `Password`) VALUES
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `AdminEnrollment`
+--
+ALTER TABLE `AdminEnrollment`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `ae_fk1` (`aEmail`),
+  ADD KEY `ae_fk2` (`mCode`);
 
 --
 -- Indexes for table `Admins`
@@ -228,6 +253,13 @@ ALTER TABLE `Users`
 --
 -- Constraints for dumped tables
 --
+
+--
+-- Constraints for table `AdminEnrollment`
+--
+ALTER TABLE `AdminEnrollment`
+  ADD CONSTRAINT `ae_fk1` FOREIGN KEY (`aEmail`) REFERENCES `Admins` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `ae_fk2` FOREIGN KEY (`mCode`) REFERENCES `Modules` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Enrollment`
