@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+if (isset($_SESSION['username'])) {
+    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+}
+
 ?>
 
 <!DOCTYPE html>
