@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 04, 2018 at 08:41 PM
+-- Generation Time: Jul 06, 2018 at 04:57 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -101,7 +101,7 @@ CREATE TABLE `Labs` (
 --
 
 INSERT INTO `Labs` (`ID`, `mCode`, `Weekday`, `Start_Time`, `End_Time`) VALUES
-(1, 'G52OSC', 3, '16:00:00', '21:00:00'),
+(1, 'G52OSC', 5, '11:00:00', '21:00:00'),
 (2, 'G52SWM', 3, '04:00:00', '06:00:00');
 
 -- --------------------------------------------------------
@@ -142,7 +142,8 @@ CREATE TABLE `Queue` (
 
 CREATE TABLE `Requests` (
   `ID` varchar(255) NOT NULL,
-  `State` varchar(255) NOT NULL,
+  `State` varchar(15) NOT NULL,
+  `Made_In` varchar(10) NOT NULL,
   `Generated_By` varchar(255) NOT NULL,
   `Handled_By` varchar(255) DEFAULT NULL,
   `Created_Time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -153,21 +154,8 @@ CREATE TABLE `Requests` (
 -- Dumping data for table `Requests`
 --
 
-INSERT INTO `Requests` (`ID`, `State`, `Generated_By`, `Handled_By`, `Created_Time`, `Finished_Time`) VALUES
-('1Eu3d1INbXi', 'Canceled', '22@22.com', NULL, '2018-07-04 17:05:01', NULL),
-('2eX5Fe8z1ER', 'Canceled', '11@11.com', NULL, '2018-06-21 15:24:44', NULL),
-('4vLYpmJ5KiU', 'Canceled', '11@11.com', NULL, '2018-06-22 17:11:00', NULL),
-('bhWcomaLL9y', 'Canceled', '11@11.com', 'ad@ad.com', '2018-06-21 15:25:14', NULL),
-('EQHEezepBf4', 'Canceled', '22@22.com', 'ad@ad.com', '2018-07-04 18:04:19', NULL),
-('eXiK3cc5f0b', 'Finished', '11@11.com', 'ad@ad.com', '2018-06-21 15:27:58', '2018-06-21 15:28:17'),
-('HsehiHGTku9', 'Canceled', '11@11.com', NULL, '2018-06-21 15:24:23', NULL),
-('joqPUdQv0Tm', 'Finished', '22@22.com', 'ad@ad.com', '2018-07-04 16:56:14', '2018-07-04 16:56:44'),
-('LdMRqDK4Bq3', 'Canceled', '11@11.com', NULL, '2018-06-21 15:25:02', NULL),
-('McFtZmeWA2i', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-27 17:58:57', '2018-06-27 18:00:06'),
-('qfTDUAD2mXY', 'Canceled', '11@11.com', NULL, '2018-06-21 15:02:02', NULL),
-('tDtxnpGxJzT', 'Finished', '11@11.com', 'ad@ad.com', '2018-06-27 17:41:42', '2018-06-27 17:42:12'),
-('V0jh0lecAd5', 'Finished', '22@22.com', 'as@as.com', '2018-07-04 19:39:29', '2018-07-04 19:39:38'),
-('XThOP6VX6bh', 'Finished', '22@22.com', 'ad@ad.com', '2018-06-22 17:11:29', '2018-06-26 16:57:00');
+INSERT INTO `Requests` (`ID`, `State`, `Made_In`, `Generated_By`, `Handled_By`, `Created_Time`, `Finished_Time`) VALUES
+('d11m00iQJns', 'Finished', 'G52OSC', '11@11.com', 'ad@ad.com', '2018-07-06 15:50:31', '2018-07-06 15:52:44');
 
 -- --------------------------------------------------------
 
@@ -242,7 +230,8 @@ ALTER TABLE `Queue`
 ALTER TABLE `Requests`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `r_fk1` (`Generated_By`),
-  ADD KEY `r_fk2` (`Handled_By`);
+  ADD KEY `r_fk2` (`Handled_By`),
+  ADD KEY `r_fk3` (`Made_In`);
 
 --
 -- Indexes for table `Users`
@@ -285,7 +274,8 @@ ALTER TABLE `Queue`
 --
 ALTER TABLE `Requests`
   ADD CONSTRAINT `r_fk1` FOREIGN KEY (`Generated_By`) REFERENCES `Users` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `r_fk2` FOREIGN KEY (`Handled_By`) REFERENCES `Admins` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `r_fk2` FOREIGN KEY (`Handled_By`) REFERENCES `Admins` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `r_fk3` FOREIGN KEY (`Made_In`) REFERENCES `Modules` (`Code`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

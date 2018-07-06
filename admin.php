@@ -36,6 +36,7 @@ if (isset($_GET['logout'])) {
         </p>
 
         <div id="first">
+            <p id="currentLab"></p>
             <p id="requestInfo"></p>
 
             <form action="getNextRequest.php" style="float: left">
@@ -158,14 +159,14 @@ if (isset($_GET['logout'])) {
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
                 } else if (email === "no lab") {
-                    document.getElementById('requestInfo').innerHTML = "No lab now";
+                    document.getElementById('requestInfo').innerHTML = "No lab now.";
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
                     document.getElementById('suspendedTable').outerHTML = "";
                     document.getElementById('requestSize').outerHTML = "";
                 } else if (email === "no enrollment") {
-                    document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab";
+                    document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab.";
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
@@ -182,6 +183,16 @@ if (isset($_GET['logout'])) {
             $.get("requestSize.php", function (size) {
                 document.getElementById('requestSize').innerHTML = 'Waiting requests size (includes being handling ones): ' + size;
             });
+
+            $.get("currentLab.php", function (lab) {
+                if (lab === 'duplicate labs') {
+                    //Do nothing
+                } else if (lab === "no lab") {
+                    //Do nothing
+                } else {
+                    document.getElementById("currentLab").innerHTML = "Current lab is " + lab + ".";
+                }
+            })
         }
 
         initial();

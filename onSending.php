@@ -140,10 +140,11 @@ try {
 
     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-    $stmt = $pdo->prepare("INSERT INTO Requests (ID, State, Generated_By) VALUES (:id, :state, :generated_by);");
+    $stmt = $pdo->prepare("INSERT INTO Requests (ID, State, Made_In, Generated_By) VALUES (:id, :state, :made_in, :generated_by);");
 
     $stmt->bindParam(':id', $id);
     $stmt->bindParam(':state', $state);
+    $stmt->bindParam(':made_in', $mCode);
     $stmt->bindParam(':generated_by', $_SESSION['username']);
 
     $stmt->execute();

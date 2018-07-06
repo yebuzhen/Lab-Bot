@@ -36,18 +36,19 @@ if (isset($_GET['logout'])) {
         </p>
 
         <div id="first">
-            <form action="onSending.php" style="float: left">
+            <form action="onSending.php">
                 <button id="request" class="btn btn-success">Make a Request</button>
-            </form>
-
-
-            <form action="onCancelling.php">
-                <button id="cancel" class="btn btn-danger" style="margin-left: 21%">Cancel My Request</button>
             </form>
 
             <p/>
 
-            <p id="requestSize"></p>
+            <form action="onCancelling.php">
+                <button id="cancel" class="btn btn-danger">Cancel My Request</button>
+            </form>
+
+            <p/>
+
+            <p id="currentLab"></p>
             <p id="queryPosition"></p>
 
             <table class='table-hover' style='width: 100%;' border="1">
@@ -103,10 +104,6 @@ if (isset($_GET['logout'])) {
 
         function initial() {
 
-            $.get("requestSize.php", function (size) {
-                document.getElementById('requestSize').innerHTML = 'Waiting requests size (includes being handling ones): ' + size;
-            });
-
             $.get("queryPosition.php", function (position) {
                 if (position == -1) {
                     document.getElementById("queryPosition").innerHTML = "You have not made a request.";
@@ -122,6 +119,16 @@ if (isset($_GET['logout'])) {
                     buttonChange(false);
                 }
             });
+
+            $.get("currentLab.php", function (lab) {
+                if (lab === 'duplicate labs') {
+                    document.getElementById("currentLab").innerHTML = "There are more than 1 labs in the room, please contact admin!";
+                } else if (lab === "no lab") {
+                    document.getElementById("currentLab").innerHTML = "No lab now.";
+                } else {
+                    document.getElementById("currentLab").innerHTML = "Current lab is " + lab + ".";
+                }
+            })
         }
 
         initial();
