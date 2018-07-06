@@ -11,7 +11,7 @@ if (isset($_SESSION['username'])) {
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Student Login</title>
+    <title>Assistant Login</title>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">

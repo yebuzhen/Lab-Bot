@@ -1,0 +1,4 @@
+1. Make student button disabled when cannot make request.
+2. Assistants and students can see what current module is.
+3. Put real module data into database.
+4. 'Fuzzy logic' implemented in requests making.
