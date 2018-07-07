@@ -14,8 +14,10 @@ $madeIn = '';
 
 date_default_timezone_set('Europe/London');
 
-$weekday = date("w");
-$time = date("H:i:s");
+$dateAndTime = new DateTime('now');
+
+$weekday = $dateAndTime->format('w');
+$time = $dateAndTime->format("H:i:s");
 $ifInModule = false;
 
 //Query the module code

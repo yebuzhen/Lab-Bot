@@ -19,12 +19,15 @@ function generateRandomString($length = 11) {
 
 date_default_timezone_set('Europe/London');
 
+$dateAndTime = new DateTime('now');
+
+$weekday = $dateAndTime->format('w');
+$time = $dateAndTime->format("H:i:s");
+
 $state = 'Waiting';
 $queueCount = 0;
 $id = generateRandomString();
 $handling_by = 'null';
-$weekday = date("w");
-$time = date("H:i:s");
 $mCode = 'null';
 $ifInModule = false;
 
