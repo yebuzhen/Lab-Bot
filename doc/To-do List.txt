@@ -1,5 +1,15 @@
 1. Make student button disabled when cannot make request. (Suspended)
+
 2. Assistants and students can see what current module is. (Finished)
+
 3. Add new column 'Made in' in requests table. (Finished)
-4. Put real module data into database.
-5. 'Fuzzy logic' implemented in requests making.
+
+4. Put real module data into database. (Suspended)
+
+5. If need to clear all requests of one module when that module ends?
+
+6. How to get all suspended requests for an assistant, and all these requests are from modules that the assistant enrols.
+   - Use foreach loop get all enrolled modules.
+   - Get all suspended requests.
+
+7. 'Fuzzy logic' implemented in requests making.
