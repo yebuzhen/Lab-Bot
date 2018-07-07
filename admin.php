@@ -148,7 +148,7 @@ if (isset($_GET['logout'])) {
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
-                } else if (email.includes("??")) {
+                } else if (email === "Has request") {
                     document.getElementById('requestInfo').innerHTML = "There is one request available.";
                     document.getElementById('getNext').disabled = false;
                     document.getElementById('finish').disabled = true;
