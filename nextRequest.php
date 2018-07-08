@@ -75,71 +75,71 @@ try {
 
 
 //Query the module code
-try {
-    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
-
-    $pdo = new PDO($dsn,$db_username,$db_password);
-
-    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
-
-    $stmt->bindParam(':time', $time);
-    $stmt->bindParam(':weekday', $weekday);
-
-    $stmt->execute();
-
-    $rows = $stmt->fetchAll();
-
-    if (count($rows) > 1) {
-        echo "duplicate labs";
-        exit(0);
-    }
-
-    foreach ($rows as $row) {
-        $mCode = $row['mCode'];
-    }
-
-    if ($mCode == 'null'){
-        echo "no lab";
-        exit(0);
-    }
-} catch (Exception $exception){
-    echo "<script type='text/javascript'> alert('Error for module code query!') </script>";
-    exit(0);
-}
-
-
-//Check the enrollment
-try{
-    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
-
-    $pdo = new PDO($dsn,$db_username,$db_password);
-
-    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $stmt = $pdo->prepare("SELECT * FROM AdminEnrollment WHERE mCode = :code;");
-
-    $stmt->bindParam(':code', $mCode);
-
-    $stmt->execute();
-
-    $rows = $stmt->fetchAll();
-
-    foreach ($rows as $row) {
-        if ($row['aEmail'] == $_SESSION['username']) {
-            $ifInModule = true;
-        }
-    }
-
-    if (!$ifInModule) {
-        echo "no enrollment";
-        exit(0);
-    }
-} catch (Exception $exception){
-    echo "<script type='text/javascript'> alert('Error for checking the enrollment!') </script>";
-    exit(0);
-}
+//try {
+//    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+//
+//    $pdo = new PDO($dsn,$db_username,$db_password);
+//
+//    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+//
+//    $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+//
+//    $stmt->bindParam(':time', $time);
+//    $stmt->bindParam(':weekday', $weekday);
+//
+//    $stmt->execute();
+//
+//    $rows = $stmt->fetchAll();
+//
+//    if (count($rows) > 1) {
+//        echo "duplicate labs";
+//        exit(0);
+//    }
+//
+//    foreach ($rows as $row) {
+//        $mCode = $row['mCode'];
+//    }
+//
+//    if ($mCode == 'null'){
+//        echo "no lab";
+//        exit(0);
+//    }
+//} catch (Exception $exception){
+//    echo "<script type='text/javascript'> alert('Error for module code query!') </script>";
+//    exit(0);
+//}
+//
+//
+////Check the enrollment
+//try{
+//    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+//
+//    $pdo = new PDO($dsn,$db_username,$db_password);
+//
+//    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+//
+//    $stmt = $pdo->prepare("SELECT * FROM AdminEnrollment WHERE mCode = :code;");
+//
+//    $stmt->bindParam(':code', $mCode);
+//
+//    $stmt->execute();
+//
+//    $rows = $stmt->fetchAll();
+//
+//    foreach ($rows as $row) {
+//        if ($row['aEmail'] == $_SESSION['username']) {
+//            $ifInModule = true;
+//        }
+//    }
+//
+//    if (!$ifInModule) {
+//        echo "no enrollment";
+//        exit(0);
+//    }
+//} catch (Exception $exception){
+//    echo "<script type='text/javascript'> alert('Error for checking the enrollment!') </script>";
+//    exit(0);
+//}
 
 
 //Find next item in queue
@@ -150,10 +150,11 @@ try {
 
     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-    $stmt = $pdo->prepare("SELECT * FROM Queue INNER JOIN Requests ON Requests.ID = Queue.rID AND Requests.Made_In = :madeIn WHERE Queue.Handling_By = :handling_by ORDER BY Queue.Position;");
+    $stmt = $pdo->prepare("SELECT * FROM Queue INNER JOIN Requests ON Requests.ID = Queue.rID INNER JOIN AdminEnrollment ON AdminEnrollment.mCode = Requests.Made_In AND AdminEnrollment.aEmail = :email WHERE Queue.Handling_By = :handling_by ORDER BY Queue.Position;");
 
+    $stmt->bindParam(':email', $_SESSION['username']);
     $stmt->bindParam(':handling_by', $null);
-    $stmt->bindParam(':madeIn', $mCode);
+
 
     $stmt->execute();
 

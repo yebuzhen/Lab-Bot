@@ -9,15 +9,48 @@
 
 <?php
 
-date_default_timezone_set('Europe/London');
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-$time = new DateTime('now');
+session_start();
 
-echo "<p>Time: ". $time->format("H:i:s")."</p>";
+include("credentials.php");
 
-date_add($time, date_interval_create_from_date_string('-15 minutes'));
+$null = 'null';
+$email = 'ad@ad.com';
 
-echo "<p>Edited Time: ". $time->format("H:i:s")."</p>";
+try {
+    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+    $pdo = new PDO($dsn,$db_username,$db_password);
+
+    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+    $stmt = $pdo->prepare("SELECT * FROM Queue INNER JOIN Requests ON Requests.ID = Queue.rID INNER JOIN AdminEnrollment ON AdminEnrollment.mCode = Requests.Made_In AND AdminEnrollment.aEmail = :email WHERE Queue.Handling_By = :handling_by ORDER BY Queue.Position;");
+
+    $stmt->bindParam(':email', $email);
+    $stmt->bindParam(':handling_by', $null);
+
+
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll();
+
+    if (count($rows) == 0) {
+        echo 'null';
+        exit(0);
+    } else {
+        echo 'Has request';
+    }
+
+    foreach ($rows as $row) {
+        $id = $row['rID'];
+        break;
+    }
+} catch (Exception $exception) {
+    echo "<script type='text/javascript'> alert('Error for Find next item in queue!') </script>";
+    exit(0);
+}
 
 ?>
 

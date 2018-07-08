@@ -172,7 +172,7 @@ if (isset($_GET['logout'])) {
         function initial() {
             $.get("nextRequest.php", function (email) {
                 if (email === "null"){
-                    document.getElementById('requestInfo').innerHTML = "There is no waiting request without assistant handling in the queue now.";
+                    document.getElementById('requestInfo').innerHTML = "There is no request in the waiting queue you can handle now.";
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
@@ -181,23 +181,23 @@ if (isset($_GET['logout'])) {
                     document.getElementById('getNext').disabled = false;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
-                } else if (email === "duplicate labs") {
-                    document.getElementById('requestInfo').innerHTML = "There are more than 1 labs in the room, please contact admin!";
-                    document.getElementById('getNext').disabled = true;
-                    document.getElementById('finish').disabled = true;
-                    document.getElementById('suspend').disabled = true;
-                } else if (email === "no lab") {
-                    document.getElementById('requestInfo').innerHTML = "No lab now.";
-                    document.getElementById('getNext').disabled = true;
-                    document.getElementById('finish').disabled = true;
-                    document.getElementById('suspend').disabled = true;
-                    document.getElementById('requestSize').outerHTML = "";
-                } else if (email === "no enrollment") {
-                    document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab.";
-                    document.getElementById('getNext').disabled = true;
-                    document.getElementById('finish').disabled = true;
-                    document.getElementById('suspend').disabled = true;
-                    document.getElementById('requestSize').outerHTML = "";
+                // } else if (email === "duplicate labs") {
+                //     document.getElementById('requestInfo').innerHTML = "There are more than 1 labs in the room, please contact admin!";
+                //     document.getElementById('getNext').disabled = true;
+                //     document.getElementById('finish').disabled = true;
+                //     document.getElementById('suspend').disabled = true;
+                // } else if (email === "no lab") {
+                //     document.getElementById('requestInfo').innerHTML = "No lab now.";
+                //     document.getElementById('getNext').disabled = true;
+                //     document.getElementById('finish').disabled = true;
+                //     document.getElementById('suspend').disabled = true;
+                //     document.getElementById('requestSize').outerHTML = "";
+                // } else if (email === "no enrollment") {
+                //     document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab.";
+                //     document.getElementById('getNext').disabled = true;
+                //     document.getElementById('finish').disabled = true;
+                //     document.getElementById('suspend').disabled = true;
+                //     document.getElementById('requestSize').outerHTML = "";
                 } else {
                     document.getElementById('requestInfo').innerHTML = "You should be coming for " + email + ".";
                     document.getElementById('getNext').disabled = true;
@@ -212,9 +212,9 @@ if (isset($_GET['logout'])) {
 
             $.get("currentLab.php", function (lab) {
                 if (lab === 'duplicate labs') {
-                    //Do nothing
+                    document.getElementById('currentLab').innerHTML = "There are more than 1 labs in the room, please contact admin!";
                 } else if (lab === "no lab") {
-                    //Do nothing
+                    document.getElementById('currentLab').innerHTML = "No lab now.";
                 } else {
                     document.getElementById("currentLab").innerHTML = "Current lab is " + lab + ".";
                 }
