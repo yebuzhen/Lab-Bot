@@ -39,11 +39,11 @@ function checkFuzzyLogic($db_database, $db_host, $db_username, $db_password) {
 
     date_default_timezone_set('Europe/London');
     $dateAndTime = new DateTime('now');
-    date_add($dateAndTime, date_interval_create_from_date_string('15 minutes'));
+    date_add($dateAndTime, date_interval_create_from_date_string('10 minutes'));
     $weekday = $dateAndTime->format('w');
     $time = $dateAndTime->format("H:i:s");
 
-    //Query the module code after 15 minutes
+    //Query the module code after 10 minutes
     try {
         $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
@@ -61,7 +61,7 @@ function checkFuzzyLogic($db_database, $db_host, $db_username, $db_password) {
         $rows = $stmt->fetchAll();
 
         if (count($rows) > 1) {
-            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 15 minutes later, please contact admin!') </script>";
+            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 10 minutes later, please contact admin!') </script>";
             echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
             exit(0);
         }
@@ -72,7 +72,7 @@ function checkFuzzyLogic($db_database, $db_host, $db_username, $db_password) {
         }
 
     } catch (Exception $exception){
-        echo "<script type='text/javascript'> alert('Error when module code query after 15 minutes!') </script>";
+        echo "<script type='text/javascript'> alert('Error when module code query after 10 minutes!') </script>";
         echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
         exit(0);
     }
@@ -99,7 +99,7 @@ function checkFuzzyLogic($db_database, $db_host, $db_username, $db_password) {
         $rows = $stmt->fetchAll();
 
         if (count($rows) > 1) {
-            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 10 minutes earlier, please contact admin!') </script>";
+            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 15 minutes earlier, please contact admin!') </script>";
             echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
             exit(0);
         }
@@ -110,7 +110,7 @@ function checkFuzzyLogic($db_database, $db_host, $db_username, $db_password) {
         }
 
     } catch (Exception $exception){
-        echo "<script type='text/javascript'> alert('Error when module code query after 15 minutes!') </script>";
+        echo "<script type='text/javascript'> alert('Error when module code query 15 minutes earlier!') </script>";
         echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
         exit(0);
     }
@@ -221,7 +221,7 @@ try{
             echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
             exit(0);
         } else {
-            echo "<script type='text/javascript'> alert('Sorry, you are not in the module 15 minutes later or ten minutes before!') </script>";
+            echo "<script type='text/javascript'> alert('Sorry, you are not in the module 10 minutes later or 15 minutes before!') </script>";
             echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
             exit(0);
         }
