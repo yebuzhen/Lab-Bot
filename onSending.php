@@ -31,6 +31,18 @@ $handling_by = 'null';
 $mCode = 'null';
 $ifInModule = false;
 
+//Check 'fuzzy' logic, if there is a right module before or after.
+function checkFuzzyLogic() {
+
+}
+
+
+
+//If there is no lab now or current lab is not enrolled, use 'fuzzy' logic to make request
+function wrongLabNow() {
+
+}
+
 
 //duplicate waiting or suspended query
 try {

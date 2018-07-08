@@ -49,6 +49,7 @@ if (isset($_GET['logout'])) {
             <p/>
 
             <p id="currentLab"></p>
+            <p id="nextLab"></p>
             <p id="queryPosition"></p>
 
             <table class='table-hover' style='width: 100%;' border="1">
@@ -128,7 +129,15 @@ if (isset($_GET['logout'])) {
                 } else {
                     document.getElementById("currentLab").innerHTML = "Current lab is " + lab + ".";
                 }
-            })
+            });
+
+            $.get("nextLab.php", function (lab) {
+                if (lab === 'no lab after') {
+                    document.getElementById("nextLab").innerHTML = "No more lab today.";
+                } else {
+                    document.getElementById("nextLab").innerHTML = "Next lab is " + lab + ".";
+                }
+            });
         }
 
         initial();

@@ -37,6 +37,7 @@ if (isset($_GET['logout'])) {
 
         <div id="first">
             <p id="currentLab"></p>
+            <p id="nextLab"></p>
             <p id="requestInfo"></p>
 
             <form action="getNextRequest.php" style="float: left">
@@ -190,14 +191,12 @@ if (isset($_GET['logout'])) {
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
-                    document.getElementById('suspendedTable').outerHTML = "";
                     document.getElementById('requestSize').outerHTML = "";
                 } else if (email === "no enrollment") {
                     document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab.";
                     document.getElementById('getNext').disabled = true;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
-                    document.getElementById('suspendedTable').outerHTML = "";
                     document.getElementById('requestSize').outerHTML = "";
                 } else {
                     document.getElementById('requestInfo').innerHTML = "You should be coming for " + email + ".";
@@ -219,7 +218,15 @@ if (isset($_GET['logout'])) {
                 } else {
                     document.getElementById("currentLab").innerHTML = "Current lab is " + lab + ".";
                 }
-            })
+            });
+
+            $.get("nextLab.php", function (lab) {
+                if (lab === 'no lab after') {
+                    document.getElementById("nextLab").innerHTML = "No more lab today.";
+                } else {
+                    document.getElementById("nextLab").innerHTML = "Next lab is " + lab + ".";
+                }
+            });
         }
 
         initial();

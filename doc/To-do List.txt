@@ -8,7 +8,7 @@
 
 5. If need to clear all requests of one module when that module ends?
 
-6. How to get all suspended requests for an assistant, and all these requests are from modules that the assistant enrols.
+6. How to get all suspended requests for an assistant, and all these requests are from modules that the assistant enrols. (Finished)
    - Use foreach loop get all enrolled modules.
    - Get all suspended requests.
 
