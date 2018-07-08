@@ -27,7 +27,6 @@ $time = $dateAndTime->format("H:i:s");
 $state = 'Waiting';
 $queueCount = 0;
 $id = generateRandomString();
-$handling_by = 'null';
 $mCode = 'null';
 
 $ifInModule = false;
@@ -292,11 +291,10 @@ try {
 
     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-    $stmt = $pdo->prepare("INSERT INTO Queue (Position, rID, Handling_By) VALUES (:position, :rID, :handling_by);");
+    $stmt = $pdo->prepare("INSERT INTO Queue (Position, rID) VALUES (:position, :rID);");
 
     $stmt->bindParam(':position', $queueCount);
     $stmt->bindParam(':rID', $id);
-    $stmt->bindParam(':handling_by', $handling_by);
 
     $stmt->execute();
 } catch (Exception $exception){

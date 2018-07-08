@@ -60,7 +60,7 @@ try {
         exit(0);
     } else {
         foreach ($rows as $row) {
-            if ($row['Handling_By'] == 'null') {
+            if ($row['Handling_By'] == '') {
                 echo $row['Position'];
                 exit(0);
             } else {

@@ -8,16 +8,15 @@ session_start();
 include("credentials.php");
 
 $id = "";
-$null = 'null';
 
-date_default_timezone_set('Europe/London');
-
-$dateAndTime = new DateTime('now');
-
-$weekday = $dateAndTime->format('w');
-$time = $dateAndTime->format("H:i:s");
-$mCode = 'null';
-$ifInModule = false;
+//date_default_timezone_set('Europe/London');
+//
+//$dateAndTime = new DateTime('now');
+//
+//$weekday = $dateAndTime->format('w');
+//$time = $dateAndTime->format("H:i:s");
+//$mCode = 'null';
+//$ifInModule = false;
 
 
 //Check if the assistant is handling a request
@@ -150,10 +149,9 @@ try {
 
     $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-    $stmt = $pdo->prepare("SELECT * FROM Queue INNER JOIN Requests ON Requests.ID = Queue.rID INNER JOIN AdminEnrollment ON AdminEnrollment.mCode = Requests.Made_In AND AdminEnrollment.aEmail = :email WHERE Queue.Handling_By = :handling_by ORDER BY Queue.Position;");
+    $stmt = $pdo->prepare("SELECT * FROM Queue INNER JOIN Requests ON Requests.ID = Queue.rID INNER JOIN AdminEnrollment ON AdminEnrollment.mCode = Requests.Made_In AND AdminEnrollment.aEmail = :email WHERE Queue.Handling_By IS NULL ORDER BY Queue.Position;");
 
     $stmt->bindParam(':email', $_SESSION['username']);
-    $stmt->bindParam(':handling_by', $null);
 
 
     $stmt->execute();
@@ -167,10 +165,6 @@ try {
         echo 'Has request';
     }
 
-    foreach ($rows as $row) {
-        $id = $row['rID'];
-        break;
-    }
 } catch (Exception $exception) {
     echo "<script type='text/javascript'> alert('Error for Find next item in queue!') </script>";
     exit(0);
