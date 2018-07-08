@@ -29,18 +29,93 @@ $queueCount = 0;
 $id = generateRandomString();
 $handling_by = 'null';
 $mCode = 'null';
+
 $ifInModule = false;
+$fuzzyLogicUsed = false;
 
-//Check 'fuzzy' logic, if there is a right module before or after.
-function checkFuzzyLogic() {
+//Check 'fuzzy' logic, if there is a right module before or after and return it
+function checkFuzzyLogic($db_database, $db_host, $db_username, $db_password) {
+    $mCode = 'null';
 
-}
+    date_default_timezone_set('Europe/London');
+    $dateAndTime = new DateTime('now');
+    date_add($dateAndTime, date_interval_create_from_date_string('15 minutes'));
+    $weekday = $dateAndTime->format('w');
+    $time = $dateAndTime->format("H:i:s");
 
+    //Query the module code after 15 minutes
+    try {
+        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
+        $pdo = new PDO($dsn,$db_username,$db_password);
 
-//If there is no lab now or current lab is not enrolled, use 'fuzzy' logic to make request
-function wrongLabNow() {
+        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
+        $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+
+        $stmt->bindParam(':time', $time);
+        $stmt->bindParam(':weekday', $weekday);
+
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll();
+
+        if (count($rows) > 1) {
+            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 15 minutes later, please contact admin!') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        }
+
+        foreach ($rows as $row) {
+            $mCode = $row['mCode'];
+            return $mCode;
+        }
+
+    } catch (Exception $exception){
+        echo "<script type='text/javascript'> alert('Error when module code query after 15 minutes!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+
+    date_add($dateAndTime, date_interval_create_from_date_string('-25 minutes'));
+    $weekday = $dateAndTime->format('w');
+    $time = $dateAndTime->format("H:i:s");
+
+    //Query the module code before 15 minutes
+    try {
+        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+        $pdo = new PDO($dsn,$db_username,$db_password);
+
+        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+        $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+
+        $stmt->bindParam(':time', $time);
+        $stmt->bindParam(':weekday', $weekday);
+
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll();
+
+        if (count($rows) > 1) {
+            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 10 minutes earlier, please contact admin!') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        }
+
+        foreach ($rows as $row) {
+            $mCode = $row['mCode'];
+            return $mCode;
+        }
+
+    } catch (Exception $exception){
+        echo "<script type='text/javascript'> alert('Error when module code query after 15 minutes!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+
+    return $mCode;
 }
 
 
@@ -103,9 +178,13 @@ try {
     }
 
     if ($mCode == 'null'){
-        echo "<script type='text/javascript'> alert('There is no lab now!') </script>";
-        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
-        exit(0);
+        $fuzzyLogicUsed = true;
+        $mCode = checkFuzzyLogic($db_database, $db_host, $db_username, $db_password);
+        if ($mCode == 'null') {
+            echo "<script type='text/javascript'> alert('There is no lab now and no lab within few minutes neither.') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        }
     }
 } catch (Exception $exception){
     echo "<script type='text/javascript'> alert('Error for module code query!') </script>";
@@ -137,9 +216,19 @@ try{
     }
 
     if (!$ifInModule) {
-        echo "<script type='text/javascript'> alert('Sorry, you are not in this module!') </script>";
-        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
-        exit(0);
+        if (!$fuzzyLogicUsed) {
+            echo "<script type='text/javascript'> alert('Sorry, you are not in this module!') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        } else {
+            echo "<script type='text/javascript'> alert('Sorry, you are not in the module 15 minutes later or ten minutes before!') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        }
+    } else {
+        if ($fuzzyLogicUsed) {
+            echo "<script type='text/javascript'> alert('You are making a request for " . $mCode . "') </script>";
+        }
     }
 } catch (Exception $exception){
     echo "<script type='text/javascript'> alert('Error for checking the enrollment!') </script>";
