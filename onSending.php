@@ -216,11 +216,51 @@ try{
 
     if (!$ifInModule) {
         if (!$fuzzyLogicUsed) {
-            echo "<script type='text/javascript'> alert('Sorry, you are not in this module!') </script>";
-            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
-            exit(0);
+            $fuzzyLogicUsed = true;
+            $mCode = checkFuzzyLogic($db_database, $db_host, $db_username, $db_password);
+            if ($mCode == 'null') {
+                echo "<script type='text/javascript'> alert('Sorry, you are not in this module and there is no lab within few minutes neither.') </script>";
+                echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                exit(0);
+            } else {
+
+                //Check the next module enrollment
+                try {
+                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                    $pdo = new PDO($dsn,$db_username,$db_password);
+
+                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                    $stmt = $pdo->prepare("SELECT * FROM Enrollment WHERE mCode = :code;");
+
+                    $stmt->bindParam(':code', $mCode);
+
+                    $stmt->execute();
+
+                    $rows = $stmt->fetchAll();
+
+                    foreach ($rows as $row) {
+                        if ($row['uEmail'] == $_SESSION['username']) {
+                            $ifInModule = true;
+                        }
+                    }
+
+                    if (!$ifInModule) {
+                        echo "<script type='text/javascript'> alert('Sorry, you are not in this module and not in the next module neither.') </script>";
+                        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                        exit(0);
+                    } else{
+                        echo "<script type='text/javascript'> alert('You are making a request for " . $mCode . "') </script>";
+                    }
+                } catch (Exception $exception){
+                    echo "<script type='text/javascript'> alert('Error for checking the next module enrollment!') </script>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                    exit(0);
+                }
+            }
         } else {
-            echo "<script type='text/javascript'> alert('Sorry, you are not in the module 10 minutes later or 15 minutes before!') </script>";
+            echo "<script type='text/javascript'> alert('Sorry, no lab now and you are not in the module 10 minutes later or 15 minutes before!') </script>";
             echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
             exit(0);
         }

@@ -8,7 +8,7 @@ session_start();
 include("credentials.php");
 
 $id = "";
-$mCode = '';
+//$mCode = '';
 //$madeIn = '';
 
 //date_default_timezone_set('Europe/London');

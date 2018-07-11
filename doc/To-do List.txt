@@ -13,3 +13,5 @@
    - Get all suspended requests.
 
 7. 'Fuzzy logic' implemented in requests making.
+
+8. Access check when finish suspended request.
