@@ -28,8 +28,10 @@ $state = 'Waiting';
 $queueCount = 0;
 $id = generateRandomString();
 $mCode = 'null';
+$nearbyModuleCode = 'null';
 
 $ifInModule = false;
+$ifInNearbyModule = false;
 $fuzzyLogicUsed = false;
 
 //Check 'fuzzy' logic, if there is a right module before or after and return it
@@ -183,6 +185,54 @@ try {
             echo "<script type='text/javascript'> alert('There is no lab now and no lab within few minutes neither.') </script>";
             echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
             exit(0);
+        }
+    } else {
+        //Check if there is a enrolled lab nearby
+        $nearbyModuleCode = checkFuzzyLogic($db_database, $db_host, $db_username, $db_password);
+
+        if ($nearbyModuleCode != 'null') {
+            //Check the nearby lab enrollment
+
+            try {
+                $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                $pdo = new PDO($dsn,$db_username,$db_password);
+
+                $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                $stmt = $pdo->prepare("SELECT * FROM Enrollment WHERE mCode = :code;");
+
+                $stmt->bindParam(':code', $nearbyModuleCode);
+
+                $stmt->execute();
+
+                $rows = $stmt->fetchAll();
+
+                foreach ($rows as $row) {
+                    if ($row['uEmail'] == $_SESSION['username']) {
+                        $ifInNearbyModule = true;
+                    }
+                }
+
+                if ($ifInNearbyModule) {
+                    echo "<script>
+                            var string = confirm('There is a lab nearby and you are enrolled, Do you want to request to the nearby module?');
+            
+                            if (string) {
+                                window.location.href = 'requestNearbyModule.php';
+                            } else {
+                                window.location.href = 'requestCurrentModule.php';
+                            }
+          
+                          </script>";
+
+                    exit(0);
+                }
+            } catch (Exception $exception){
+                echo "<script type='text/javascript'> alert('Error when Check the nearby lab enrollment!') </script>";
+                echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                exit(0);
+            }
         }
     }
 } catch (Exception $exception){

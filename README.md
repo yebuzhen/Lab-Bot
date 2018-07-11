@@ -14,7 +14,7 @@ Only the web service is currently available (locally).
 1. Using local account to log in the system.
 2. Make a request.
 3. Requests can be made when there is a lab in A32 and the student is enrolled in the corresponding module.
-4. Requests can also be made if there is a lab within 15 minutes in the future or 10 minutes before, and the student is enrolled in the corresponding module.
+4. Requests can also be made if there is a lab within 10 minutes in the future or 15 minutes before, and the student is enrolled in the corresponding module.
 5. Can see how many waiting requests are in the queue.
 6. Can see the position of my request.
 7. Can see the request history.
