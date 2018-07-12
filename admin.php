@@ -56,7 +56,7 @@ if (isset($_GET['logout'])) {
 
             <p id="requestSize"></p>
 
-            <table class='table-hover' border="1" style="width: 100%;">
+            <table class='table-hover' border="1" style="width: 100%; border-color: white;">
                 <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Request History</caption>
                 <tr style="color: #dddd55">
                     <th>State</th>
@@ -96,7 +96,7 @@ if (isset($_GET['logout'])) {
                 ?>
             </table>
 
-            <table class='table-hover' border="1" style="width: 100%;" id="suspendedTable">
+            <table class='table-hover' border="1" style="width: 100%; border-color: white;" id="suspendedTable">
                 <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Suspended Requests</caption>
                 <tr style="color: #dddd55">
                     <th>Module</th>
@@ -181,23 +181,6 @@ if (isset($_GET['logout'])) {
                     document.getElementById('getNext').disabled = false;
                     document.getElementById('finish').disabled = true;
                     document.getElementById('suspend').disabled = true;
-                // } else if (email === "duplicate labs") {
-                //     document.getElementById('requestInfo').innerHTML = "There are more than 1 labs in the room, please contact admin!";
-                //     document.getElementById('getNext').disabled = true;
-                //     document.getElementById('finish').disabled = true;
-                //     document.getElementById('suspend').disabled = true;
-                // } else if (email === "no lab") {
-                //     document.getElementById('requestInfo').innerHTML = "No lab now.";
-                //     document.getElementById('getNext').disabled = true;
-                //     document.getElementById('finish').disabled = true;
-                //     document.getElementById('suspend').disabled = true;
-                //     document.getElementById('requestSize').outerHTML = "";
-                // } else if (email === "no enrollment") {
-                //     document.getElementById('requestInfo').innerHTML = "You are not the assistant for this lab.";
-                //     document.getElementById('getNext').disabled = true;
-                //     document.getElementById('finish').disabled = true;
-                //     document.getElementById('suspend').disabled = true;
-                //     document.getElementById('requestSize').outerHTML = "";
                 } else {
                     document.getElementById('requestInfo').innerHTML = "You should be coming for " + email + ".";
                     document.getElementById('getNext').disabled = true;

@@ -36,11 +36,6 @@ if (isset($_GET['logout'])) {
         </p>
 
         <div id="first">
-            <form action="onSending.php">
-                <button id="request" class="btn btn-success">Make a Request</button>
-            </form>
-
-            <p/>
 
             <form action="onCancelling.php">
                 <button id="cancel" class="btn btn-danger">Cancel My Request</button>
@@ -48,11 +43,241 @@ if (isset($_GET['logout'])) {
 
             <p/>
 
+            <table id="availableLabs" class="table-hover" style='width: 100%; border-color: white;' border="1">
+                <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Available Labs</caption>
+                <tr style="color: #dddd55">
+                    <th>Lab Title</th>
+                    <th>Lab State</th>
+                    <th>Action</th>
+                </tr>
+                <?php
+
+                error_reporting(E_ALL);
+                ini_set('display_errors', 1);
+
+                include("credentials.php");
+
+                date_default_timezone_set('Europe/London');
+
+                $dateAndTime = new DateTime('now');
+
+                $weekday = $dateAndTime->format('w');
+                $time = $dateAndTime->format("H:i:s");
+
+                $state = 'Waiting';
+                $currentLabCode = 'null';
+                $nearbyLabCode = 'null';
+
+                //Query the current module code
+                try {
+                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                    $pdo = new PDO($dsn,$db_username,$db_password);
+
+                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                    $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+
+                    $stmt->bindParam(':time', $time);
+                    $stmt->bindParam(':weekday', $weekday);
+
+                    $stmt->execute();
+
+                    $rows = $stmt->fetchAll();
+
+                    if (count($rows) > 1) {
+                        echo "<script type='text/javascript'> alert('There are more than 1 labs in the room, please contact admin!') </script>";
+                        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                        exit(0);
+                    }
+
+                    foreach ($rows as $row) {
+                        $currentLabCode = $row['mCode'];
+                    }
+
+                } catch (Exception $exception){
+                    echo "<script type='text/javascript'> alert('Error when check the current module code!') </script>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                    exit(0);
+                }
+
+                //Check the current lab is enrolled
+                try {
+                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                    $pdo = new PDO($dsn,$db_username,$db_password);
+
+                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                    $stmt = $pdo->prepare("SELECT * FROM Enrollment WHERE mCode = :code;");
+
+                    $stmt->bindParam(':code', $currentLabCode);
+
+                    $stmt->execute();
+
+                    $rows = $stmt->fetchAll();
+
+                    foreach ($rows as $row) {
+                        if ($row['uEmail'] == $_SESSION['username']) {
+                            echo "<tr><td>" . $currentLabCode . "</td><td>Ongoing</td>";
+                            echo "<td><a href='makeARequest.php?code=" . $currentLabCode . "' style='color: #dddd55'>Request</a> </td></tr>";
+                        }
+                    }
+
+                } catch (Exception $exception){
+                    echo "<script type='text/javascript'> alert('Error when check the current lab is enrolled!') </script>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                    exit(0);
+                }
+
+                date_add($dateAndTime, date_interval_create_from_date_string('10 minutes'));
+                $weekday = $dateAndTime->format('w');
+                $time = $dateAndTime->format("H:i:s");
+
+                //Check next 10 minutes lab
+                try {
+                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                    $pdo = new PDO($dsn,$db_username,$db_password);
+
+                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                    $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+
+                    $stmt->bindParam(':time', $time);
+                    $stmt->bindParam(':weekday', $weekday);
+
+                    $stmt->execute();
+
+                    $rows = $stmt->fetchAll();
+
+                    if (count($rows) > 1) {
+                        echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 10 minutes later, please contact admin!') </script>";
+                        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                        exit(0);
+                    }
+
+                    foreach ($rows as $row) {
+                        $nearbyLabCode = $row['mCode'];
+                    }
+
+                } catch (Exception $exception){
+                    echo "<script type='text/javascript'> alert('Error when module code query after 10 minutes!') </script>";
+                    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                    exit(0);
+                }
+
+                if ($nearbyLabCode != $currentLabCode && $nearbyLabCode != 'null') {
+                    //Check later lab is enrolled
+                    try {
+                        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                        $pdo = new PDO($dsn,$db_username,$db_password);
+
+                        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                        $stmt = $pdo->prepare("SELECT * FROM Enrollment WHERE mCode = :code;");
+
+                        $stmt->bindParam(':code', $nearbyLabCode);
+
+                        $stmt->execute();
+
+                        $rows = $stmt->fetchAll();
+
+                        foreach ($rows as $row) {
+                            if ($row['uEmail'] == $_SESSION['username']) {
+                                echo "<tr><td>" . $nearbyLabCode . "</td><td>About to Start</td>";
+                                echo "<td><a href='makeARequest.php?code=" . $nearbyLabCode . "' style='color: #dddd55'>Request</a> </td></tr>";
+                            }
+                        }
+
+                    } catch (Exception $exception){
+                        echo "<script type='text/javascript'> alert('Error when check the later lab is enrolled!') </script>";
+                        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                        exit(0);
+                    }
+                } else {
+                    //Check last lab with 15 minutes
+
+                    date_add($dateAndTime, date_interval_create_from_date_string('-25 minutes'));
+                    $weekday = $dateAndTime->format('w');
+                    $time = $dateAndTime->format("H:i:s");
+
+                    //Query the module code before 15 minutes
+                    try {
+                        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                        $pdo = new PDO($dsn,$db_username,$db_password);
+
+                        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                        $stmt = $pdo->prepare("SELECT * FROM Labs WHERE (:time BETWEEN Start_Time AND End_Time) AND Weekday = :weekday;");
+
+                        $stmt->bindParam(':time', $time);
+                        $stmt->bindParam(':weekday', $weekday);
+
+                        $stmt->execute();
+
+                        $rows = $stmt->fetchAll();
+
+                        if (count($rows) > 1) {
+                            echo "<script type='text/javascript'> alert('There are more than 1 labs in the room 15 minutes earlier, please contact admin!') </script>";
+                            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                            exit(0);
+                        }
+
+                        foreach ($rows as $row) {
+                            $nearbyLabCode = $row['mCode'];
+                        }
+
+                    } catch (Exception $exception){
+                        echo "<script type='text/javascript'> alert('Error when module code query 15 minutes earlier!') </script>";
+                        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                        exit(0);
+                    }
+
+                    if ($nearbyLabCode != 'null' && $nearbyLabCode != $currentLabCode) {
+                        //Check last lab is enrolled
+
+                        try {
+                            $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+                            $pdo = new PDO($dsn,$db_username,$db_password);
+
+                            $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+                            $stmt = $pdo->prepare("SELECT * FROM Enrollment WHERE mCode = :code;");
+
+                            $stmt->bindParam(':code', $nearbyLabCode);
+
+                            $stmt->execute();
+
+                            $rows = $stmt->fetchAll();
+
+                            foreach ($rows as $row) {
+                                if ($row['uEmail'] == $_SESSION['username']) {
+                                    echo "<tr><td>" . $nearbyLabCode . "</td><td>Just Over</td>";
+                                    echo "<td><a href='makeARequest.php?code=" . $nearbyLabCode . "' style='color: #dddd55'>Request</a> </td></tr>";
+                                }
+                            }
+
+                        } catch (Exception $exception){
+                            echo "<script type='text/javascript'> alert('Error when check the last lab is enrolled!') </script>";
+                            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+                            exit(0);
+                        }
+                    }
+                }
+
+
+                ?>
+
+
             <p id="currentLab"></p>
             <p id="nextLab"></p>
             <p id="queryPosition"></p>
 
-            <table class='table-hover' style='width: 100%;' border="1">
+            <table id="requestHistory" class='table-hover' style='width: 100%; border-color: white;' border="1">
                 <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Request History</caption>
                 <tr style="color: #dddd55">
                     <th>State</th>
@@ -93,31 +318,22 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
     <script>
-        function buttonChange(state) {
-            if (state == false) {
-                document.getElementById('request').disabled = true;
-                document.getElementById('cancel').disabled = false;
-            } else {
-                document.getElementById('request').disabled = false;
-                document.getElementById('cancel').disabled = true;
-            }
-        }
 
         function initial() {
 
             $.get("queryPosition.php", function (position) {
                 if (position == -1) {
                     document.getElementById("queryPosition").innerHTML = "You have not made a request.";
-                    buttonChange(true);
+                    document.getElementById("cancel").outerHTML = "";
                 } else if (position == -2) {
                     document.getElementById("queryPosition").innerHTML = "Your request has been suspended, the assistant will help you out once ready.";
-                    buttonChange(false);
+                    document.getElementById("availableLabs").outerHTML = "";
                 } else if (position == 0){
                     document.getElementById("queryPosition").innerHTML = "The assistant is coming.";
-                    buttonChange(false);
+                    document.getElementById("availableLabs").outerHTML = "";
                 } else{
                     document.getElementById("queryPosition").innerHTML = "Your request is at position " + position + ". Waiting for assistants.";
-                    buttonChange(false);
+                    document.getElementById("availableLabs").outerHTML = "";
                 }
             });
 
