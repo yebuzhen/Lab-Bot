@@ -8,6 +8,7 @@ session_start();
 include("credentials.php");
 
 $state = 'Finished';
+$code = '';
 
 
 //Query request state
@@ -36,11 +37,42 @@ try {
             echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";
             exit(0);
         }
+
+        $code = $row['Made_In'];
     }
 
 } catch (Exception $exception){
     echo "<script type='text/javascript'> alert('Error for ID and position query!') </script>";
     echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";
+    exit(0);
+}
+
+//Check enrollment
+
+try {
+    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+    $pdo = new PDO($dsn,$db_username,$db_password);
+
+    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+    $stmt = $pdo->prepare("SELECT * FROM AdminEnrollment WHERE aEmail = :email AND mCode = :code;");
+
+    $stmt->bindParam(":email", $_SESSION['username']);
+    $stmt->bindParam(":code", $code);
+
+    $stmt->execute();
+
+    $rows = $stmt->fetchAll();
+
+    if (count($rows) == 0){
+        echo "<script type='text/javascript'> alert('Sorry you cannot handle this request!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";
+        exit(0);
+    }
+
+} catch (Exception $exception){
+    echo "<script type='text/javascript'> alert('Error when search modules!') </script>";
     exit(0);
 }
 

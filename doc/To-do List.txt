@@ -12,8 +12,8 @@
    - Use foreach loop get all enrolled modules.
    - Get all suspended requests.
 
-7. 'Fuzzy logic' implemented in requests making. (Finish)
+7. 'Fuzzy logic' implemented in requests making. (Finished)
 
 8. Use list to show what labs students can make requests for.
 
-9. Access check when finish suspended request.
+9. Access check when finish suspended request. (Finished)
