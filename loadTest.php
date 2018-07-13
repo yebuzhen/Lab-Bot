@@ -21,7 +21,7 @@ $_SESSION['username'] = '11@11.com';
 
     <button id="endButton" onclick="end()">End</button>
 
-    <p id="testingContent"></p>
+    <div id="testingContent"></div>
 
 </body>
 
@@ -44,7 +44,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("queryPosition.php", function () {
             if (studentQueryPositionCounter == 100) {
-                document.getElementById("testingContent").textContent += "Student Position Query 100 Times! ";
+                document.getElementById("testingContent").innerHTML += "Student Position Query 100 Times! <br>";
                 studentQueryPositionCounter = 0;
             } else {
                 studentQueryPositionCounter++;
@@ -53,7 +53,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("currentLab.php", function () {
             if (studentCurrentLabCounter == 100) {
-                document.getElementById("testingContent").textContent += "Student Current Lab Query 100 Times! ";
+                document.getElementById("testingContent").innerHTML += "Student Current Lab Query 100 Times! <br>";
                 studentCurrentLabCounter = 0;
             } else {
                 studentCurrentLabCounter++;
@@ -62,7 +62,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("nextLab.php", function () {
             if (studentNextLabCounter == 100) {
-                document.getElementById("testingContent").textContent += "Student Next Lab Query 100 Times! ";
+                document.getElementById("testingContent").innerHTML += "Student Next Lab Query 100 Times! <br>";
                 studentNextLabCounter = 0;
             } else {
                 studentNextLabCounter++;
@@ -75,7 +75,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("nextRequest.php", function () {
             if (assistantNextRequestCounter == 5) {
-                document.getElementById("testingContent").textContent += "Assistant Next Request Query 5 Times! ";
+                document.getElementById("testingContent").innerHTML += "Assistant Next Request Query 5 Times! <br>";
                 assistantNextRequestCounter = 0;
             } else {
                 assistantNextRequestCounter++;
@@ -84,7 +84,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("requestSize.php", function () {
             if (assistantRequestSizeCounter == 5) {
-                document.getElementById("testingContent").textContent += "Assistant Request Size Query 5 Times! ";
+                document.getElementById("testingContent").innerHTML += "Assistant Request Size Query 5 Times! <br>";
                 assistantRequestSizeCounter = 0;
             } else {
                 assistantRequestSizeCounter++;
@@ -93,7 +93,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("currentLab.php", function () {
             if (assistantCurrentLabCounter == 5) {
-                document.getElementById("testingContent").textContent += "Assistant Current Lab Query 5 Times! ";
+                document.getElementById("testingContent").innerHTML += "Assistant Current Lab Query 5 Times! <br>";
                 assistantCurrentLabCounter = 0;
             } else {
                 assistantCurrentLabCounter++;
@@ -102,7 +102,7 @@ $_SESSION['username'] = '11@11.com';
 
         $.get("nextLab.php", function () {
             if (assistantNextLabCounter == 5) {
-                document.getElementById("testingContent").textContent += "Assistant Next Lab Query 5 Times! ";
+                document.getElementById("testingContent").innerHTML += "Assistant Next Lab Query 5 Times! <br>";
                 assistantNextLabCounter = 0;
             } else {
                 assistantNextLabCounter++;
@@ -113,7 +113,7 @@ $_SESSION['username'] = '11@11.com';
 
     function insertionAndFinishingTest() {
         $.get("requestInsertionAndFinishingTest.php", function () {
-            document.getElementById("testingContent").textContent += "Request Made and Finished! ";
+            document.getElementById("testingContent").innerHTML += "Request Made and Finished! <br>";
         })
     }
 
