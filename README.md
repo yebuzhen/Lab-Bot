@@ -15,20 +15,19 @@ Only the web service is currently available (locally).
 2. Make a request.
 3. Requests can be made when there is a lab in A32 and the student is enrolled in the corresponding module.
 4. Requests can also be made if there is a lab within 10 minutes in the future or 15 minutes before, and the student is enrolled in the corresponding module.
-5. Can see how many waiting requests are in the queue.
-6. Can see the position of my request.
-7. Can see the request history.
-8. Cancel the request.
+5. Can see the position of my request.
+6. Can see the request history.
+7. Cancel the request.
 
 ### For Assistants
 1. Using local account to log in the system.
 2. When there is a waiting request available, you can choose to help when get ready.
-3. Assistants can only handle requests from the modules they enrolled in.
+3. Assistants can only handle requests from the modules they enroll.
 4. After deciding to help, you can see which student to help.
 5. Finish the request.
 6. Suspend the request.
 7. Can see the requests you have handled before.
-8. Can see all the suspended requests and choose one to help.
+8. Can see all available suspended requests and choose one to help.
 
 # Future Development
 ---

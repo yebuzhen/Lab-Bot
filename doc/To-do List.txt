@@ -1,4 +1,4 @@
-1. Make student button disabled when cannot make request. (Suspended)
+1. Make student button disabled when cannot make request. (Canceled)
 
 2. Assistants and students can see what current module is. (Finished)
 
@@ -14,6 +14,8 @@
 
 7. 'Fuzzy logic' implemented in requests making. (Finished)
 
-8. Use list to show what labs students can make requests for.
+8. Use list to show what labs students can make requests for. (Finished)
 
 9. Access check when finish suspended request. (Finished)
+
+10. Loading test.
