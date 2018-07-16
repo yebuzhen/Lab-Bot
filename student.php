@@ -1,14 +1,50 @@
 <?php
 session_start();
 
+include('credentials.php');
+
+$success = 0;
+
 if (!isset($_SESSION['username'])) {
     echo "<script type='text/javascript'> alert('Please log in first!') </script>";
     echo "<meta http-equiv='Refresh' content='0;URL=studentLogin.php'>";
+    exit(0);
 }
 if (isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
     echo "<meta http-equiv='Refresh' content='0;URL=studentLogin.php'>";
+    exit(0);
+}
+
+try {
+
+    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+    $pdo = new PDO($dsn,$db_username,$db_password);
+
+    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+    $rows = $pdo->query("SELECT * FROM Users;");
+
+    foreach ($rows as $row) {
+        if ($row['Email'] == $_SESSION['username']) {
+            $success = 1;
+        }
+    }
+
+    if ($success == 0){
+        echo "<script type='text/javascript'> alert('You are not a student.') </script>";
+        session_destroy();
+        unset($_SESSION['username']);
+        echo "<meta http-equiv='Refresh' content='0;URL=studentLogin.php'>";
+        exit(0);
+    }
+}
+catch (Exception $e) {
+    echo "<script type='text/javascript'> alert('Error when query if is a valid student.') </script>";
+    echo "<meta http-equiv='Refresh' content='0;URL=studentLogin.php'>";
+    exit(0);
 }
 ?>
 

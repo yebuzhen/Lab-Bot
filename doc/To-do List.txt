@@ -18,4 +18,6 @@
 
 9. Access check when finish suspended request. (Finished)
 
-10. Loading test.
+10. Loading test. (Finished)
+
+11. Baning the login switch. (Finished)
