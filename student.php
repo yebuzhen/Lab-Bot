@@ -316,6 +316,7 @@ catch (Exception $e) {
             <table id="requestHistory" class='table-hover' style='width: 100%; border-color: white;' border="1">
                 <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Request History</caption>
                 <tr style="color: #dddd55">
+                    <th>Module</th>
                     <th>State</th>
                     <th>Created Time</th>
                     <th>Finished Time</th>
@@ -342,7 +343,7 @@ catch (Exception $e) {
                     $rows = $stmt->fetchAll();
 
                     foreach ($rows as $row) {
-                        echo "<tr><td>" . $row['State'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
+                        echo "<tr><td>" . $row['Made_In'] . "</td><td>" . $row['State'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
                     }
 
                 } catch (Exception $exception){
