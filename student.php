@@ -71,14 +71,19 @@ catch (Exception $e) {
             <a href="student.php?logout='1'" style="color: #dddd55">logout</a>
         </p>
 
-        <div id="first">
+        <form id="requestBox" action="onCancelling.php" style="border-style: dashed;">
+            <p id="requestInfo" style="padding-top: 10px; padding-left: 10px; padding-right: 10px;"></p>
+            <p id="requestPosition" style="padding-left: 10px; padding-right: 10px;"></p>
+            <button id="cancel" class="btn btn-danger" style="margin-bottom: 10px; margin-left: 22%;">Cancel My Request</button>
+        </form>
 
-            <form action="onCancelling.php">
-                <button id="cancel" class="btn btn-danger">Cancel My Request</button>
-            </form>
+        <p/>
 
-            <p/>
+        <p id="currentLab"></p>
+        <p id="nextLab"></p>
+        <p id="queryPosition"></p>
 
+        <div>
             <table id="availableLabs" class="table-hover" style='width: 100%; border-color: white;' border="1">
                 <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Available Labs</caption>
                 <tr style="color: #dddd55">
@@ -307,52 +312,12 @@ catch (Exception $e) {
 
 
                 ?>
-
-
-            <p id="currentLab"></p>
-            <p id="nextLab"></p>
-            <p id="queryPosition"></p>
-
-            <table id="requestHistory" class='table-hover' style='width: 100%; border-color: white;' border="1">
-                <caption style="font-weight: bold; font-size: large; caption-side: top; color: #dd5; text-align: center">Request History</caption>
-                <tr style="color: #dddd55">
-                    <th>Module</th>
-                    <th>State</th>
-                    <th>Created Time</th>
-                    <th>Finished Time</th>
-                </tr>
-                <?php
-                error_reporting(E_ALL);
-                ini_set('display_errors', 1);
-
-                include("credentials.php");
-
-                try {
-                    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
-
-                    $pdo = new PDO($dsn,$db_username,$db_password);
-
-                    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-                    $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_by = :generated_by ORDER BY Created_Time;");
-
-                    $stmt->bindParam(':generated_by', $_SESSION['username']);
-
-                    $stmt->execute();
-
-                    $rows = $stmt->fetchAll();
-
-                    foreach ($rows as $row) {
-                        echo "<tr><td>" . $row['Made_In'] . "</td><td>" . $row['State'] . "</td><td>" . $row['Created_Time'] . "</td><td>" . $row['Finished_Time'] . "</td></tr>";
-                    }
-
-                } catch (Exception $exception){
-                    echo "<script type='text/javascript'> alert('Error for search history query!') </script>";
-                    exit(0);
-                }
-                ?>
             </table>
         </div>
+
+
+
+
     </div>
     <script>
 
@@ -361,7 +326,7 @@ catch (Exception $e) {
             $.get("queryPosition.php", function (position) {
                 if (position == -1) {
                     document.getElementById("queryPosition").innerHTML = "You have not made a request.";
-                    document.getElementById("cancel").outerHTML = "";
+                    document.getElementById("requestBox").outerHTML = "";
                 } else if (position == -2) {
                     document.getElementById("queryPosition").innerHTML = "Your request has been suspended, the assistant will help you out once ready.";
                     document.getElementById("availableLabs").outerHTML = "";
@@ -369,7 +334,7 @@ catch (Exception $e) {
                     document.getElementById("queryPosition").innerHTML = "The assistant is coming.";
                     document.getElementById("availableLabs").outerHTML = "";
                 } else{
-                    document.getElementById("queryPosition").innerHTML = "Your request is at position " + position + ". Waiting for assistants.";
+                    document.getElementById("requestPosition").innerHTML = "Your request is at position " + position + ".";
                     document.getElementById("availableLabs").outerHTML = "";
                 }
             });
@@ -389,6 +354,12 @@ catch (Exception $e) {
                     document.getElementById("nextLab").innerHTML = "No more lab today.";
                 } else {
                     document.getElementById("nextLab").innerHTML = "Next lab is " + lab + ".";
+                }
+            });
+
+            $.get("requestedLab.php", function (lab) {
+                if (lab !== '') {
+                    document.getElementById("requestInfo").innerHTML = "You have requested for lab " + lab + ".";
                 }
             });
         }
