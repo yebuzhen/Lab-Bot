@@ -248,7 +248,7 @@ if ($ifEnrolled) {
 
         $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-        $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_By = :generated_by AND Finished_Time > :time AND Made_In = :mCode ORDER BY Finished_Time;");
+        $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_By = :generated_by AND Finished_Time > :time AND Made_In = :mCode ORDER BY Finished_Time DESC;");
 
         $stmt->bindParam(':generated_by', $_SESSION['username']);
         $stmt->bindParam(':time', $time);
@@ -260,6 +260,7 @@ if ($ifEnrolled) {
 
         foreach ($rows as $row) {
             $preference = $row['Handled_By'];
+            break;
         }
 
     } catch (Exception $exception){
