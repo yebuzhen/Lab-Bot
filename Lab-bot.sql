@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 08, 2018 at 09:03 PM
+-- Generation Time: Jul 20, 2018 at 01:01 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -80,7 +80,7 @@ CREATE TABLE `Enrollment` (
 INSERT INTO `Enrollment` (`ID`, `uEmail`, `mCode`) VALUES
 (1, '11@11.com', 'G52OSC'),
 (2, '11@11.com', 'G52SWM'),
-(3, '22@22.com', 'G52SWM');
+(3, '22@22.com', 'G52OSC');
 
 -- --------------------------------------------------------
 
@@ -101,9 +101,9 @@ CREATE TABLE `Labs` (
 --
 
 INSERT INTO `Labs` (`ID`, `mCode`, `Weekday`, `Start_Time`, `End_Time`) VALUES
-(1, 'G52OSC', 0, '11:20:00', '12:27:00'),
-(2, 'G52SWM', 0, '18:00:00', '20:00:00'),
-(3, 'G52OSC', 0, '22:00:00', '23:00:00');
+(1, 'G52SWM', 4, '08:20:00', '19:27:00'),
+(2, 'G52OSC', 5, '11:10:00', '14:10:00'),
+(3, 'G52SWM', 5, '14:10:00', '21:00:00');
 
 -- --------------------------------------------------------
 
@@ -132,15 +132,9 @@ INSERT INTO `Modules` (`Code`) VALUES
 CREATE TABLE `Queue` (
   `Position` int(11) NOT NULL,
   `rID` varchar(255) NOT NULL,
-  `Handling_By` varchar(255) DEFAULT NULL
+  `Handling_By` varchar(255) DEFAULT NULL,
+  `Preference` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `Queue`
---
-
-INSERT INTO `Queue` (`Position`, `rID`, `Handling_By`) VALUES
-(1, 'ii0MI0ettrI', NULL);
 
 -- --------------------------------------------------------
 
@@ -163,18 +157,8 @@ CREATE TABLE `Requests` (
 --
 
 INSERT INTO `Requests` (`ID`, `State`, `Made_In`, `Generated_By`, `Handled_By`, `Created_Time`, `Finished_Time`) VALUES
-('4Gf1yFA6jQX', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-07-08 17:57:26', '2018-07-08 17:59:27'),
-('b49Vr84FYSv', 'Finished', 'G52OSC', '22@22.com', 'ad@ad.com', '2018-07-07 19:48:11', '2018-07-08 15:03:14'),
-('d11m00iQJns', 'Finished', 'G52OSC', '11@11.com', 'ad@ad.com', '2018-07-06 15:50:31', '2018-07-06 15:52:44'),
-('fl3u3anL519', 'Finished', 'G52OSC', '22@22.com', 'ad@ad.com', '2018-07-08 15:10:18', '2018-07-08 15:11:14'),
-('H4raVOp6SSW', 'Canceled', 'G52SWM', '22@22.com', 'ad@ad.com', '2018-07-08 18:00:07', NULL),
-('h6oDC8LfrJC', 'Finished', 'G52SWM', '22@22.com', 'ad@ad.com', '2018-07-08 18:07:36', '2018-07-08 18:07:56'),
-('HnkUi4bTtuw', 'Finished', 'G52OSC', '11@11.com', 'ad@ad.com', '2018-07-08 15:10:01', '2018-07-08 15:11:02'),
-('ii0MI0ettrI', 'Waiting', 'G52SWM', '22@22.com', NULL, '2018-07-08 19:54:07', NULL),
-('JafyPid4Mpx', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-07-08 17:40:48', '2018-07-08 17:41:30'),
-('KJlf4CqFYPo', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-07-07 18:31:42', '2018-07-08 15:03:16'),
-('QJbUq3xiD5p', 'Finished', 'G52SWM', '22@22.com', 'ad@ad.com', '2018-07-08 18:08:04', '2018-07-08 18:09:06'),
-('UNOeQ1Me4SQ', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-07-08 16:55:35', '2018-07-08 17:35:28');
+('FOJK1704ciC', 'Finished', 'G52OSC', '11@11.com', 'ad@ad.com', '2018-07-18 14:02:08', '2018-07-20 11:21:00'),
+('sYzcwPS7yJk', 'Canceled', 'G52OSC', '11@11.com', NULL, '2018-07-18 14:01:42', NULL);
 
 -- --------------------------------------------------------
 
@@ -242,7 +226,8 @@ ALTER TABLE `Modules`
 ALTER TABLE `Queue`
   ADD PRIMARY KEY (`Position`),
   ADD UNIQUE KEY `q_fk2` (`Handling_By`) USING BTREE,
-  ADD KEY `q_fk1` (`rID`) USING BTREE;
+  ADD KEY `q_fk1` (`rID`) USING BTREE,
+  ADD KEY `q_fk3` (`Preference`);
 
 --
 -- Indexes for table `Requests`
@@ -288,7 +273,8 @@ ALTER TABLE `Labs`
 --
 ALTER TABLE `Queue`
   ADD CONSTRAINT `q_fk1` FOREIGN KEY (`rID`) REFERENCES `Requests` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `q_fk2` FOREIGN KEY (`Handling_By`) REFERENCES `Admins` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `q_fk2` FOREIGN KEY (`Handling_By`) REFERENCES `Admins` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `q_fk3` FOREIGN KEY (`Preference`) REFERENCES `Admins` (`Email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `Requests`

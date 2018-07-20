@@ -22,6 +22,6 @@
 
 11. Baning the login switch. (Finished)
 
-12. Improve UI in student website.
+12. Improve UI in student website. (Finished)
 
-13. Student will request recent assistant for help.
+13. Student will request recent assistant for help. (Finished)
