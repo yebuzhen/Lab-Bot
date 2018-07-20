@@ -20,6 +20,7 @@ $id = generateRandomString();
 $state = "Waiting";
 $ifEnrolled = false;
 $queueCount = 0;
+$preference = '';
 
 function checkLabValidity ($code, $db_database, $db_username, $db_password, $db_host) {
     date_default_timezone_set('Europe/London');
@@ -234,6 +235,39 @@ if ($ifEnrolled) {
         exit(0);
     }
 
+    //Query preference
+    date_default_timezone_set('Europe/London');
+    $dateAndTime = new DateTime('now');
+    date_add($dateAndTime, date_interval_create_from_date_string('-10 minutes'));
+    $time = $dateAndTime->format("Y:m:d H:i:s");
+
+    try {
+        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+        $pdo = new PDO($dsn,$db_username,$db_password);
+
+        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+        $stmt = $pdo->prepare("SELECT * FROM Requests WHERE Generated_By = :generated_by AND Finished_Time > :time AND Made_In = :mCode ORDER BY Finished_Time;");
+
+        $stmt->bindParam(':generated_by', $_SESSION['username']);
+        $stmt->bindParam(':time', $time);
+        $stmt->bindParam(':mCode', $_GET['code']);
+
+        $stmt->execute();
+
+        $rows = $stmt->fetchAll();
+
+        foreach ($rows as $row) {
+            $preference = $row['Handled_By'];
+        }
+
+    } catch (Exception $exception){
+        echo "<script type='text/javascript'> alert('Error when query preference!') </script>";
+        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+        exit(0);
+    }
+
 
     //waiting requests size query
     try {
@@ -259,25 +293,49 @@ if ($ifEnrolled) {
         exit(0);
     }
 
+    if ($preference != ''){
+        //queue insertion with preference
+        try {
+            $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
-    //queue insertion
-    try {
-        $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+            $pdo = new PDO($dsn,$db_username,$db_password);
 
-        $pdo = new PDO($dsn,$db_username,$db_password);
+            $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
 
-        $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+            $stmt = $pdo->prepare("INSERT INTO Queue (Position, rID, Preference) VALUES (:position, :rID, :preference);");
 
-        $stmt = $pdo->prepare("INSERT INTO Queue (Position, rID) VALUES (:position, :rID);");
+            $stmt->bindParam(':position', $queueCount);
+            $stmt->bindParam(':rID', $id);
+            $stmt->bindParam(':preference', $preference);
 
-        $stmt->bindParam(':position', $queueCount);
-        $stmt->bindParam(':rID', $id);
+            $stmt->execute();
+        } catch (Exception $exception){
+            echo "<script type='text/javascript'> alert('Error when queue insertion with preference!') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        }
 
-        $stmt->execute();
-    } catch (Exception $exception){
-        echo "<script type='text/javascript'> alert('Error for queue insertion!') </script>";
-        echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
-        exit(0);
+    } else {
+        //queue insertion
+        try {
+            $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+
+            $pdo = new PDO($dsn,$db_username,$db_password);
+
+            $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
+
+            $stmt = $pdo->prepare("INSERT INTO Queue (Position, rID) VALUES (:position, :rID);");
+
+            $stmt->bindParam(':position', $queueCount);
+            $stmt->bindParam(':rID', $id);
+
+            $stmt->execute();
+        } catch (Exception $exception){
+            echo "<script type='text/javascript'> alert('Error for queue insertion!') </script>";
+            echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
+            exit(0);
+        }
+
     }
 
     echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
