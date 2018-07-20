@@ -328,10 +328,10 @@ catch (Exception $e) {
                     document.getElementById("queryPosition").innerHTML = "You have not made a request.";
                     document.getElementById("requestBox").outerHTML = "";
                 } else if (position == -2) {
-                    document.getElementById("queryPosition").innerHTML = "Your request has been suspended, the assistant will help you out once ready.";
+                    document.getElementById("requestPosition").innerHTML = "Your request has been suspended.";
                     document.getElementById("availableLabs").outerHTML = "";
                 } else if (position == 0){
-                    document.getElementById("queryPosition").innerHTML = "The assistant is coming.";
+                    document.getElementById("requestPosition").innerHTML = "The assistant is coming.";
                     document.getElementById("availableLabs").outerHTML = "";
                 } else{
                     document.getElementById("requestPosition").innerHTML = "Your request is at position " + position + ".";
