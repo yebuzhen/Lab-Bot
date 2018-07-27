@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 session_start();
 
 include("credentials.php");
+include ("functionSet.php");
 
 $id = "";
 $state = 'Suspended';
@@ -46,44 +47,11 @@ try {
 
 
 //Delete queue
-try {
-    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
-
-    $pdo = new PDO($dsn,$db_username,$db_password);
-
-    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $stmt = $pdo->prepare("DELETE FROM Queue WHERE Handling_By = :handling_by;");
-
-    $stmt->bindParam(':handling_by', $_SESSION['username']);
-
-    $stmt->execute();
-
-} catch (Exception $exception){
-    echo "<script type='text/javascript'> alert('Error queue deletion!') </script>";
-    echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";
-    exit(0);
-}
+deleteQueueByHandling_By($_SESSION['username'], 'admin', $db_database, $db_username, $db_password, $db_host);
 
 
 //Decrement position(s)
-try {
-    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
-
-    $pdo = new PDO($dsn,$db_username,$db_password);
-
-    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $stmt = $pdo->prepare("UPDATE Queue SET Position = Position - 1 WHERE Position > :position;");
-
-    $stmt->bindParam(':position', $position);
-
-    $stmt->execute();
-} catch (Exception $exception){
-    echo "<script type='text/javascript'> alert('Error for position decrement!') </script>";
-    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
-    exit(0);
-}
+decrementPosition($position, "admin", $db_database, $db_username, $db_password, $db_host);
 
 
 //Change request state

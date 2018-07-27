@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 session_start();
 
 include("credentials.php");
+include ("functionSet.php");
 
 $id = "";
 $stateCanceled = 'Canceled';
@@ -104,43 +105,9 @@ try {
 }
 
 
-//Delete Queue
-try {
-    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
+deleteQueueByID($id, 'student', $db_database, $db_username, $db_password, $db_host);
 
-    $pdo = new PDO($dsn,$db_username,$db_password);
+decrementPosition($position, "student", $db_database, $db_username, $db_password, $db_host);
 
-    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $stmt = $pdo->prepare("DELETE FROM Queue WHERE rID = :rID;");
-
-    $stmt->bindParam(':rID', $id);
-
-    $stmt->execute();
-
-} catch (Exception $exception){
-    echo "<script type='text/javascript'> alert('Error queue deletion!') </script>";
-    echo "<meta http-equiv='Refresh' content='0;URL=admin.php'>";
-    exit(0);
-}
-
-//Decrement position(s)
-try {
-    $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
-
-    $pdo = new PDO($dsn,$db_username,$db_password);
-
-    $pdo->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
-
-    $stmt = $pdo->prepare("UPDATE Queue SET Position = Position - 1 WHERE Position > :position;");
-
-    $stmt->bindParam(':position', $position);
-
-    $stmt->execute();
-} catch (Exception $exception){
-    echo "<script type='text/javascript'> alert('Error for position decrement!') </script>";
-    echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";
-    exit(0);
-}
 
 echo "<meta http-equiv='Refresh' content='0;URL=student.php'>";

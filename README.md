@@ -17,8 +17,7 @@ Only the web service is currently available (locally).
 4. Requests can also be made if there is a lab within 10 minutes in the future or 15 minutes before, and the student is enrolled in the corresponding module.
 5. If the last request is finished in 10 minutes, then the current request will be assigned to last assistant who helped you last time. If the last request is more than 10 minutes earlier, the request will not be assigned to a specific assistant.
 6. Can see the position of my request.
-7. Can see the request history.
-8. Cancel the request.
+7. Cancel the request.
 
 ### For Assistants
 1. Using local account to log in the system.
