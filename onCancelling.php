@@ -30,11 +30,11 @@ try {
     $rows = $stmt->fetchAll();
 
     foreach ($rows as $row) {
-        if ($row['State'] == 'Waiting' || $row['State'] == 'Suspended'){
+        if ($row['State'] == 'Waiting'){
             $id = $row['ID'];
-            if ($row['State'] == 'Suspended') {
-                $ifSuspended = true;
-            }
+        } else if ($row['State'] == 'Suspended') {
+            $id = $row['ID'];
+            $ifSuspended = true;
         }
     }
 
