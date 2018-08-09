@@ -196,7 +196,7 @@ if ($ifEnrolled) {
         }
 
     } else {
-        //queue insertion
+        //queue insertion without preference
         try {
             $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
 
