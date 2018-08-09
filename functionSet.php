@@ -1,6 +1,6 @@
 <?php
 
-
+//Delete one request in the queue by ID
 function deleteQueueByID ($id, $operator, $db_database, $db_username, $db_password, $db_host) {
 
     try {
@@ -28,6 +28,7 @@ function deleteQueueByID ($id, $operator, $db_database, $db_username, $db_passwo
 
 }
 
+//Delete one request by querying the handling assistant
 function deleteQueueByHandling_By ($handling_by, $operator, $db_database, $db_username, $db_password, $db_host) {
 
     try {
@@ -55,6 +56,8 @@ function deleteQueueByHandling_By ($handling_by, $operator, $db_database, $db_us
 
 }
 
+
+//Decrement all request IDs in queue
 function decrementPosition($position, $operator, $db_database, $db_username, $db_password, $db_host) {
 
     try {
@@ -81,6 +84,8 @@ function decrementPosition($position, $operator, $db_database, $db_username, $db
 
 }
 
+
+//Finish one request by querying the handling assistant
 function finishOneRequest ($id, $handled_by, $db_database, $db_username, $db_password, $db_host) {
 
     $state = 'Finished';
@@ -107,6 +112,11 @@ function finishOneRequest ($id, $handled_by, $db_database, $db_username, $db_pas
 
 }
 
+
+//Check the lab is valid:
+// 1.Is the current lab
+// 2.Is the last lab within 15 minutes.
+// 3.Is the next lab starting within 10 minutes.
 function checkLabValidity ($code, $db_database, $db_username, $db_password, $db_host) {
     date_default_timezone_set('Europe/London');
     $dateAndTime = new DateTime('now');
@@ -231,6 +241,7 @@ function checkLabValidity ($code, $db_database, $db_username, $db_password, $db_
 }
 
 
+//checking if the assistant is handling a request
 function handlingRequest ($handling_by, $db_database, $db_username, $db_password, $db_host) {
 
     try {
@@ -259,6 +270,7 @@ function handlingRequest ($handling_by, $db_database, $db_username, $db_password
 }
 
 
+//Get the next available request in the queue which the assistant can handle.
 function nextItemInQueue ($email, $db_database, $db_username, $db_password, $db_host) {
 
     try {

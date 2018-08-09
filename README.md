@@ -40,8 +40,8 @@ Because all the files are running locally, you should install and run the MySQL 
 
 1. Import 'Lab-bot.qsl' file into your MySQL, which includes all the databases and some testing data.
 2. Make sure credentials are correct in 'credentials.php', matching your own database.
-3. 'studentLogin.php' is for student users.
-4. 'adminLogin.php' is for assistant users.
+3. 'studentLogin.php' is for student users to login.
+4. 'adminLogin.php' is for assistant users to login.
 
 # Authors
 ---
@@ -50,4 +50,4 @@ Because all the files are running locally, you should install and run the MySQL 
 
 # Contributing
 ---
-If you want to understand the code, develop or contribute, please inform [Buzhen Ye]( mailto:psyby3@nottingham.ac.uk).
+If you want to understand the code, develop or contribute, please check the documentations in doc folder and inform [Buzhen Ye]( mailto:psyby3@nottingham.ac.uk).

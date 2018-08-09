@@ -57,6 +57,7 @@ if (count($rows) == 0) {
 }
 
 foreach ($rows as $row) {
+    //The request has a preference and is not the current assistant.
     if (!is_null($row['Preference']) && $row['Preference'] != $_SESSION['username']) {
 
         //Query whether the request has been made for more than 10 minutes
@@ -84,6 +85,7 @@ foreach ($rows as $row) {
             $rows = $stmt->fetchAll();
 
             if (count($rows) == 0) {
+                //Within 10 minutes, cannot get that request.
                 continue;
             } else {
                 echo 'Has request';
@@ -95,7 +97,7 @@ foreach ($rows as $row) {
         }
 
 
-    } else {
+    } else { //No preference or the preference is the current assistant.
         echo 'Has request';
         exit(0);
     }
