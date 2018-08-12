@@ -10,9 +10,15 @@ Class Site {
 	}
 	
 	public function getSite($id){
-		
-		$site = array($id => ($this->sites[$id]) ? $this->sites[$id] : $this->sites[1]);
+
+		if (array_key_exists($id, $this->sites)) {
+			$site = array($id => $this->sites[$id]);
+			return $site;
+		}
+
+		$site = array($id => 'not valid');
 		return $site;
+		
 	}
 
 	public function __construct(){

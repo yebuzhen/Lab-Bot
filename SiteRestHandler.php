@@ -36,6 +36,38 @@ class SiteRestHandler extends SimpleRest {
 		// 	echo $response;
 		// }
 	}
+
+	public function getSite($id) {
+
+		$site = new Site();
+		$rawData = $site->getSite($id);
+
+		if(empty($rawData)) {
+			$statusCode = 404;
+			$rawData = array('error' => 'No sites found!');		
+		} else {
+			$statusCode = 200;
+		}
+
+		$requestContentType = $_SERVER['HTTP_ACCEPT'];
+		$this ->setHttpHeaders($requestContentType, $statusCode);
+			
+		//Only response with Json data
+		$response = $this->encodeJson($rawData);
+		echo $response;
+
+		//We only need Json data here, if need html and xml, uncomment below code.
+		// if(strpos($requestContentType,'application/json') !== false){
+		// 	$response = $this->encodeJson($rawData);
+		// 	echo $response;
+		// } else if(strpos($requestContentType,'text/html') !== false){
+		// 	$response = $this->encodeHtml($rawData);
+		// 	echo $response;
+		// } else if(strpos($requestContentType,'application/xml') !== false){
+		// 	$response = $this->encodeXml($rawData);
+		// 	echo $response;
+		// }
+	}
 	
 	public function encodeHtml($responseData) {
 	
@@ -61,31 +93,5 @@ class SiteRestHandler extends SimpleRest {
 		return $xml->asXML();
 	}
 	
-	public function getSite($id) {
-
-		$site = new Site();
-		$rawData = $site->getSite($id);
-
-		if(empty($rawData)) {
-			$statusCode = 404;
-			$rawData = array('error' => 'No sites found!');		
-		} else {
-			$statusCode = 200;
-		}
-
-		$requestContentType = $_SERVER['HTTP_ACCEPT'];
-		$this ->setHttpHeaders($requestContentType, $statusCode);
-				
-		if(strpos($requestContentType,'application/json') !== false){
-			$response = $this->encodeJson($rawData);
-			echo $response;
-		} else if(strpos($requestContentType,'text/html') !== false){
-			$response = $this->encodeHtml($rawData);
-			echo $response;
-		} else if(strpos($requestContentType,'application/xml') !== false){
-			$response = $this->encodeXml($rawData);
-			echo $response;
-		}
-	}
 }
 ?>
