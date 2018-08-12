@@ -11,7 +11,7 @@ class SiteRestHandler extends SimpleRest {
 
 		if(empty($rawData)) {
 			$statusCode = 404;
-			$rawData = array('error' => 'No sites found!');		
+			$rawData = array('error' => 'Please login first!');		
 		} else {
 			$statusCode = 200;
 		}

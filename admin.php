@@ -12,7 +12,6 @@ if (!isset($_SESSION['username'])) {
 }
 if (isset($_GET['logout'])) {
     session_destroy();
-    unset($_SESSION['username']);
     echo "<meta http-equiv='Refresh' content='0;URL=adminLogin.php'>";
     exit(0);
 }
@@ -30,6 +29,7 @@ try {
 
     foreach ($rows as $row) {
         if ($row['Email'] == $_SESSION['username']) {
+            $_SESSION['userType'] = "admin";
             $success = 1;
         }
     }
@@ -37,7 +37,6 @@ try {
     if ($success == 0){
         echo "<script type='text/javascript'> alert('You are not an assistant.') </script>";
         session_destroy();
-        unset($_SESSION['username']);
         echo "<meta http-equiv='Refresh' content='0;URL=adminLogin.php'>";
         exit(0);
     }

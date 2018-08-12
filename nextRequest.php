@@ -10,11 +10,16 @@ include ("functionSet.php");
 
 $id = "";
 
+$_SESSION['ifHandlingRequest'] = false;
+$_SESSION['requestStudent'] = null;
 
 //Check if the assistant is handling a request
 $rows = handlingRequest($_SESSION['username'], $db_database, $db_username, $db_password, $db_host);
 
 if (count($rows) != 0) {
+
+    $_SESSION['ifHandlingRequest'] = true;
+
     foreach ($rows as $row) {
         $id = $row['rID'];
     }
@@ -36,6 +41,7 @@ if (count($rows) != 0) {
         $rows = $stmt->fetchAll();
 
         foreach ($rows as $row) {
+            $_SESSION['requestStudent'] = $row['Generated_By'];
             echo $row['Generated_By'];
             exit(0);
         }

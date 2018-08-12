@@ -12,7 +12,6 @@ if (!isset($_SESSION['username'])) {
 }
 if (isset($_GET['logout'])) {
     session_destroy();
-    unset($_SESSION['username']);
     echo "<meta http-equiv='Refresh' content='0;URL=studentLogin.php'>";
     exit(0);
 }
@@ -30,13 +29,13 @@ try {
     foreach ($rows as $row) {
         if ($row['Email'] == $_SESSION['username']) {
             $success = 1;
+            $_SESSION['userType'] = "student";
         }
     }
 
     if ($success == 0){
         echo "<script type='text/javascript'> alert('You are not a student.') </script>";
         session_destroy();
-        unset($_SESSION['username']);
         echo "<meta http-equiv='Refresh' content='0;URL=studentLogin.php'>";
         exit(0);
     }

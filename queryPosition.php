@@ -8,6 +8,8 @@ include("credentials.php");
 
 $id = '';
 
+$_SESSION['requestPosition'] = -1;
+
 //Query state
 try {
     $dsn = 'mysql:dbname='.$db_database.';host='.$db_host;
@@ -24,12 +26,27 @@ try {
 
     $rows = $stmt->fetchAll();
 
+    $_SESSION['ifHasRequest'] = false;
+    $_SESSION['ifSuspened'] = false;
+    $_SESSION['request'] = null;
+
     foreach ($rows as $row) {
+
         if ($row['State'] == 'Waiting'){
+
             $id = $row['ID'];
+            $_SESSION['ifHasRequest'] = true;
+            $_SESSION['request'] = $row['ID'];
+            $_SESSION['ifSuspened'] = false;
+
         } else if ($row['State'] == 'Suspended') {
+
+            $_SESSION['ifHasRequest'] = true;
+            $_SESSION['request'] = $row['ID'];
+            $_SESSION['ifSuspened'] = true;
             echo -2;
             exit(0);
+
         }
     }
 
@@ -61,9 +78,11 @@ try {
     } else {
         foreach ($rows as $row) {
             if ($row['Handling_By'] == '') {
+                $_SESSION['requestPosition'] = (int) $row['Position'];
                 echo $row['Position'];
                 exit(0);
             } else {
+                $_SESSION['requestPosition'] = 0;
                 echo 0;
                 exit(0);
             }

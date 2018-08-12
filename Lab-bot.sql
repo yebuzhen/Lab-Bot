@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 20, 2018 at 01:01 PM
+-- Generation Time: Aug 12, 2018 at 05:13 PM
 -- Server version: 10.1.31-MariaDB
 -- PHP Version: 7.2.3
 
@@ -40,7 +40,8 @@ CREATE TABLE `AdminEnrollment` (
 
 INSERT INTO `AdminEnrollment` (`ID`, `aEmail`, `mCode`) VALUES
 (1, 'ad@ad.com', 'G52OSC'),
-(2, 'ad@ad.com', 'G52SWM');
+(2, 'ad@ad.com', 'G52SWM'),
+(3, 'as@as.com', 'G52SWM');
 
 -- --------------------------------------------------------
 
@@ -80,7 +81,7 @@ CREATE TABLE `Enrollment` (
 INSERT INTO `Enrollment` (`ID`, `uEmail`, `mCode`) VALUES
 (1, '11@11.com', 'G52OSC'),
 (2, '11@11.com', 'G52SWM'),
-(3, '22@22.com', 'G52OSC');
+(3, '22@22.com', 'G52SWM');
 
 -- --------------------------------------------------------
 
@@ -101,9 +102,8 @@ CREATE TABLE `Labs` (
 --
 
 INSERT INTO `Labs` (`ID`, `mCode`, `Weekday`, `Start_Time`, `End_Time`) VALUES
-(1, 'G52SWM', 4, '08:20:00', '19:27:00'),
-(2, 'G52OSC', 5, '11:10:00', '14:10:00'),
-(3, 'G52SWM', 5, '14:10:00', '21:00:00');
+(1, 'G52OSC', 0, '11:10:00', '15:10:00'),
+(2, 'G52SWM', 0, '15:10:00', '21:00:00');
 
 -- --------------------------------------------------------
 
@@ -157,8 +157,18 @@ CREATE TABLE `Requests` (
 --
 
 INSERT INTO `Requests` (`ID`, `State`, `Made_In`, `Generated_By`, `Handled_By`, `Created_Time`, `Finished_Time`) VALUES
+('BbiOmXribxG', 'Finished', 'G52OSC', '22@22.com', 'as@as.com', '2018-07-20 12:16:51', '2018-07-20 12:42:49'),
+('d8Ch2WkqPC6', 'Finished', 'G52OSC', '11@11.com', 'ad@ad.com', '2018-07-26 14:28:07', '2018-07-26 14:28:49'),
+('DCJjiO9IJnW', 'Finished', 'G52OSC', '22@22.com', 'ad@ad.com', '2018-07-20 12:43:47', '2018-07-20 12:43:53'),
+('eMWUqHsK75a', 'Finished', 'G52SWM', '22@22.com', 'as@as.com', '2018-07-27 15:36:33', '2018-07-27 15:37:57'),
 ('FOJK1704ciC', 'Finished', 'G52OSC', '11@11.com', 'ad@ad.com', '2018-07-18 14:02:08', '2018-07-20 11:21:00'),
-('sYzcwPS7yJk', 'Canceled', 'G52OSC', '11@11.com', NULL, '2018-07-18 14:01:42', NULL);
+('HkhShJdvWIf', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-07-27 15:35:56', '2018-07-27 15:37:53'),
+('P6Ans7ob4cu', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-08-12 16:08:50', '2018-08-12 16:11:34'),
+('sYzcwPS7yJk', 'Canceled', 'G52OSC', '11@11.com', NULL, '2018-07-18 14:01:42', NULL),
+('tyyrrvkBOHF', 'Finished', 'G52OSC', '11@11.com', 'as@as.com', '2018-07-25 11:47:10', '2018-07-25 11:48:49'),
+('uL58nOsP6ji', 'Finished', 'G52SWM', '22@22.com', 'as@as.com', '2018-07-27 15:28:44', '2018-07-27 15:39:31'),
+('XQvPDkJQaUD', 'Finished', 'G52SWM', '11@11.com', 'ad@ad.com', '2018-08-02 20:32:32', '2018-08-02 20:32:34'),
+('YVfnK7GCDsT', 'Finished', 'G52OSC', '11@11.com', 'as@as.com', '2018-07-25 11:48:57', '2018-07-25 11:51:37');
 
 -- --------------------------------------------------------
 
