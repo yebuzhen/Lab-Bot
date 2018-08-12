@@ -34,6 +34,7 @@ try {
 
     if (count($rows) > 1) {
         echo "duplicate labs";
+        $_SESSION['currentLab'] = $mCode;
         exit(0);
     }
 
@@ -43,9 +44,11 @@ try {
 
     if ($mCode == 'null'){
         echo "no lab";
+        $_SESSION['currentLab'] = $mCode;
         exit(0);
     }
 
+    $_SESSION['currentLab'] = $mCode;
     echo $mCode;
 } catch (Exception $exception){
     echo "<script type='text/javascript'> alert('Error for module code query!') </script>";

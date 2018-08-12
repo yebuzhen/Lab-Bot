@@ -1,8 +1,5 @@
 <?php 
-/*
- * 一个简单的 RESTful web services 基类
- * 我们可以基于这个类来扩展需求
-*/
+
 class SimpleRest {
 	
 	private $httpVersion = "HTTP/1.1";

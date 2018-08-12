@@ -1,13 +1,8 @@
 <?php
-/* 
- * 菜鸟教程 RESTful 演示实例
- * RESTful 服务类
- */
 
 session_start();
 
 Class Site {
-
 	var $sites;
 		
 	public function getAllSite(){
@@ -22,7 +17,8 @@ Class Site {
 
 	public function __construct(){
         $this->sites = array(
-        	'user' => $_SESSION['username']
+        	'user' => htmlspecialchars($_SESSION['username']),
+        	'currentLab' => htmlspecialchars($_SESSION['currentLab'])
         );
     }
 }
