@@ -30,6 +30,16 @@ Only the web service is currently available (locally).
 7. Can see the requests you have handled before.
 8. Can see all available suspended requests and choose one to help.
 
+### REST API Use
+To use REST API from web browser, you should login first. Go to url: "http://localhost/.../Lab-Bot/site/list/" (... is the prefix address), then you can see JSON data similar to below:
+![REST](RESTall.png)
+
+You can also get a specific JSON item by indicating in the URL, for example, if you go to URL: "http://localhost/.../Lab-Bot/site/list/userType/"
+![REST](RESTone.png)
+
+Please note the file “.htaccess” is essential to REST, keep it with other PHP files in the same folder.
+
+
 # Future Development
 ---
 We will continue developing the web service and try to build software for A32 lab PC in the future.
