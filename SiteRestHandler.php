@@ -37,10 +37,10 @@ class SiteRestHandler extends SimpleRest {
 		// }
 	}
 
-	public function getSite($id) {
+	public function getItem($id) {
 
 		$site = new Site();
-		$rawData = $site->getSite($id);
+		$rawData = $site->getItem($id);
 
 		if(empty($rawData)) {
 			$statusCode = 404;
