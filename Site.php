@@ -3,21 +3,21 @@
 session_start();
 
 Class Site {
-	var $sites;
+	var $items;
 		
-	public function getAllSite(){
-		return $this->sites;
+	public function getAllItem(){
+		return $this->items;
 	}
 	
-	public function getSite($id){
+	public function getItem($id){
 
-		if (array_key_exists($id, $this->sites)) {
-			$site = array($id => $this->sites[$id]);
-			return $site;
+		if (array_key_exists($id, $this->items)) {
+			$item = array($id => $this->items[$id]);
+			return $item;
 		}
 
-		$site = array($id => 'not valid');
-		return $site;
+		$item = array($id => 'not valid');
+		return $item;
 		
 	}
 
@@ -27,7 +27,7 @@ Class Site {
 			
 			if ($_SESSION['userType'] == 'student') {
 
-				$this->sites = array(
+				$this->items = array(
 		        	'userType' => $_SESSION['userType'],
 		        	'email' => $_SESSION['username'],
 		        	'currentLab' => $_SESSION['currentLab'],
@@ -39,7 +39,7 @@ Class Site {
 
 			} else if ($_SESSION['userType'] == 'admin') {
 
-				$this->sites = array(
+				$this->items = array(
 		        	'userType' => $_SESSION['userType'],
 		        	'email' => $_SESSION['username'],
 		        	'currentLab' => $_SESSION['currentLab'],

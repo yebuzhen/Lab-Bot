@@ -4,10 +4,10 @@ require_once("Site.php");
 
 class SiteRestHandler extends SimpleRest {
 
-	function getAllSites() {	
+	function getAllItems() {	
 
 		$site = new Site();
-		$rawData = $site->getAllSite();
+		$rawData = $site->getAllItem();
 
 		if(empty($rawData)) {
 			$statusCode = 404;

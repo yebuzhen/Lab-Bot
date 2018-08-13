@@ -11,13 +11,13 @@ switch($view){
 	case "all":
 		// Handle REST Url /site/list/
 		$siteRestHandler = new SiteRestHandler();
-		$siteRestHandler->getAllSites();
+		$siteRestHandler->getAllItems();
 		break;
 		
 	case "single":
 		// Handle REST Url /site/show/<id>/
 		$siteRestHandler = new SiteRestHandler();
-		$siteRestHandler->getSite($_GET["id"]);
+		$siteRestHandler->getItem($_GET["id"]);
 		break;
 
 	case "" :
